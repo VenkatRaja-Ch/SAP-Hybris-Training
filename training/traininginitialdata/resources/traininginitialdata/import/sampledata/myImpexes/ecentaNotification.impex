@@ -1,0 +1,14 @@
+# Defining EcentaNotification
+INSERT_UPDATE EcentaNotification; id[unique=true]; b2bCustomer(uid); Date[dateformat='dd.MM.yyyy']; type(code); message[cellDecorator= org.training.traininginitialdata.decorator.EcentaNotificationDecorator]; priority(code);
+;1;william.hunter@rustic-hw.com;24.05.2022;OrderManagement;Your Order xxxx-xxxx ;Normal;
+;2;ulf.becker@rustic-hw.com;21.06.2022;News;Your Order zzzz-zzzz for our product xyz has been put on hold due to not clearing the payment amount. Please clear the amount as soon as possible to resume the order;High;
+;3;mingmei.wang@pronto-hw.com;27.06.2022;WorkFlow;The system workflow for role 1111zzzz has been set by user: abcd@example.com;Normal;
+;4;ulf.becker@rustic-hw.com;14.07.2022;OrderManagement;Your Order yyyy-yyyy has now been successfully processed through our stage 1. We would like thank you for your patience. The update to proceed further will be notified to you through your provided email.;Normal;
+;5;mingmei.wang@pronto-hw.com;16.07.2022;WorkFlow;The system workflow for role 9999aaaa has been set by user: wxyz@example.com;Low;
+
+INSERT_UPDATE EcentaNotification; id[unique=true];title[translator=org.training.traininginitialdata.translator.EcentaNotificationTranslator];
+;1;;
+;2;Attention!;
+;3;;
+;4;;
+;5;;

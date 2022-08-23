@@ -1,0 +1,25 @@
+# Creating a B2B Customer
+##B2BUnit
+INSERT_UPDATE B2BUnit; description; uid[unique = true]; name   ; locName[lang = en]; groups(uid); reportingOrganization(uid);
+                     ; Pronto     ; Pronto            ; Pronto ; Pronto            ;            ; Pronto;
+##B2BCustomer
+INSERT_UPDATE B2BCustomer; description; uid[unique = true]; email; name;title(code);groups(uid);permissionGroups(uid); sessionCurrency(isocode)[default = 'USD'];
+                         ; Patch Customer; patch.customer@ecenta.com ; patch.customer@ecenta.com ; Patch Customer ; ms; Pronto, b2badmingroup ;
+
+# Adding two Notifications to the B2B Customer
+INSERT_UPDATE EcentaNotification; id[unique=true]; b2bCustomer(uid); Date[dateformat='dd.MM.yyyy']; type(code); message[cellDecorator= org.training.traininginitialdata.decorator.EcentaNotificationDecorator]; priority(code);
+;6;patch.customer@ecenta.com;10.07.2005;News;Hey! We would like to this moment to appriciate and have you welcome on board to our Organization.;Low;
+;7;patch.customer@ecenta.com;15.08.2005;WorkFlow;The System-Setup has been executed and the Next task will be assigned to your current work flow.;Normal;
+
+INSERT_UPDATE EcentaNotification; id[unique=true];title[translator=org.training.traininginitialdata.translator.EcentaNotificationTranslator];
+;6;;
+;7;New Update on WorkFlow!;
+
+
+## Dynamic Attributes
+INSERT_UPDATE B2BCustomer; uid[unique=true]; name; email; active; defaultB2BUnit(name);
+                         ; dynamic.attribute@ecenta.com; Dynamic Attribute; dynamic.attribute@ecenta.com; true;   Rustic Services;
+INSERT_UPDATE EcentaNotification; id[unique=true]; b2bCustomer(uid); Date[dateformat='dd.MM.yyyy']; type(code); message[cellDecorator= org.training.traininginitialdata.decorator.EcentaNotificationDecorator]; priority(code);
+                                ;8;dynamic.attribute@ecenta.com;15.06.2015;News;Hey! This notification is generated to test the Dynamic Attributes Task;Low;
+INSERT_UPDATE EcentaNotification; id[unique=true];title[translator=org.training.traininginitialdata.translator.EcentaNotificationTranslator];
+                                ;8;Dynamic Attributes Task!;
