@@ -8,6 +8,7 @@ package org.training.core.job;
     * Persist them into the database
 */
 
+import de.hybris.platform.b2b.model.B2BCustomerModel;
 import org.training.core.model.EcentaNotificationModel;
 import de.hybris.platform.cronjob.enums.CronJobResult;
 import de.hybris.platform.cronjob.enums.CronJobStatus;
@@ -25,10 +26,7 @@ import de.hybris.platform.solrfacetsearch.indexer.exceptions.IndexerException;
 import de.hybris.platform.solrfacetsearch.model.config.SolrFacetSearchConfigModel;
 import de.hybris.platform.tx.Transaction;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
@@ -79,8 +77,7 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
             try {
                 tx = Transaction.current();
                 tx.begin();
-                getModelService().save(ecentaNotificationModelListToBeDeleted);     //todo:to be checked
-//                getModelService().removeAll(ecentaNotificationModelListToBeDeleted);   todo: to be checked
+                getModelService().saveAll(ecentaNotificationModelListToBeDeleted);
                 tx.commit();
             }
             catch (final ModelRemovalException e){
@@ -91,6 +88,7 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
                 LOG.error("Could not remove the product List --> " + e);
             }
         }
+        LOG.info("Transaction line has been executed!");
 
         try{
             final SolrFacetSearchConfigModel facetSearchConfigModel = baseSiteService.getBaseSiteForUID(SITE_UID).getSolrFacetSearchConfiguration();  //todo: check SITE_UID
@@ -100,6 +98,21 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         catch (final FacetConfigServiceException | IndexerException e){
             LOG.error("Could not index the product --> " + e);
         }
+
+
+        LOG.info("facetSearchConfigModel line has been executed!");
+
+        /*  Testcase for executing the DAO Task starts    */
+        /* Task 1: Fetching a B2BCustomer */
+        final B2BCustomerModel b2BCustomer1 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("william.hunter@rustic-hw.com").get(0);
+        final B2BCustomerModel b2BCustomer2 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("ulf.becker@rustic-hw.com").get(0);
+        final B2BCustomerModel b2BCustomer3 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("mingmei.wang@pronto-hw.com").get(0);
+
+        /* Task 2: Fetching the EcentaNotifications for that B2BCustomer */
+
+        //todo: Use the fetched B2BCustomer to extract all the EcentaNotifications associated with fetched B2BCustomer.
+
+        /*  Testcase for executing the DAO Task ends    */
 
         return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
     }

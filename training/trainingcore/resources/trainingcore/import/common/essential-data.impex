@@ -109,4 +109,4 @@ INSERT_UPDATE EcentaNotificationRemovalCronJob; code[unique=true]; job(code); xD
 ;ecentaNotificationsRemovalCronJob;ecentaNotificationsRemovalJob;365;en;
 #Trigger for EcentaNotificationRemovalCronjob
 INSERT_UPDATE Trigger; cronJob(code)[unique=true]; active; cronExpression;
-;ecentaNotificationsRemovalCronJob;true;0 0 0 * * ?
+;ecentaNotificationsRemovalCronJob;true;0 0 0 * * ?;

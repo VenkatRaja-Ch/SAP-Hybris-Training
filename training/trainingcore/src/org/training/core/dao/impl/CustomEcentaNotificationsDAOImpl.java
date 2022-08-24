@@ -5,6 +5,7 @@ package org.training.core.dao.impl;
 */
 
 import de.hybris.platform.b2b.model.B2BCustomerModel;
+import org.training.core.job.EcentaNotificationsRemovalJob;
 import org.training.core.model.EcentaNotificationModel;
 import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
 import de.hybris.platform.servicelayer.search.FlexibleSearchService;
@@ -19,7 +20,9 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
 
     private FlexibleSearchService flexibleSearchService;
     private B2BCustomerModel b2BCustomerModel;
+    private String ecentaNotificationPriority;
 
+    // Task: 4 -> CronJobs
     /*
         * Logic to retrieve EcentaNotification entities which are older than 365 days (1 year) using FlexibleSearchService
         * Return the List of EcentaNotification entities retrieved
@@ -40,6 +43,8 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         return searchResult.getResult();
     }
 
+
+    // Task: 6 -> DAO
     /*
         * This method that returns a list of all the EcentaNotifications for a Specific B2BCustomer
     */
@@ -60,6 +65,26 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             return Collections.emptyList();
     }
 
+
+    @Override
+    public List<B2BCustomerModel> findB2BCustomerUsingUID(final String b2bCustomerUid)
+    {
+        final String queryToGetB2bCustomer = "SELECT {PK} FROM {B2BCustomer} WHERE {uid}=?uid";
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("uid",b2bCustomerUid);
+
+        final FlexibleSearchQuery searchQuery = new FlexibleSearchQuery( queryToGetB2bCustomer );
+        searchQuery.addQueryParameters(params);
+        searchQuery.setResultClassList(Collections.singletonList(B2BCustomerModel.class));
+        final SearchResult<B2BCustomerModel> searchResult = getFlexibleSearchService().search(searchQuery);
+
+        if(!(null == searchResult.getResult()))
+            return searchResult.getResult();
+        else
+            return Collections.emptyList();
+    }
+
+
     private List<EcentaNotificationModel> getEcentaNotificationModels(String queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndType, Map<String, Object> params) {
         final FlexibleSearchQuery searchQuery = new FlexibleSearchQuery( queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndType.toString() );
         searchQuery.addQueryParameters(params);
@@ -78,8 +103,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         * This method that returns a list of all the EcentaNotifications for a Specific B2BCustomer
         * Also specific Type of the EcentaNotification
      */
-    @Override
-    public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificType(B2BCustomerModel b2BCustomerModel, String ecentaNotificationType) {
+    private List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificType(B2BCustomerModel b2BCustomerModel, String ecentaNotificationType) {
 
         List <EcentaNotificationModel> allNotificationsOfPassedB2BCustomer = findAllNotificationForSpecificB2bCustomer( b2BCustomerModel );         //todo: to be cleaned later
 
@@ -95,13 +119,13 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         return getEcentaNotificationModels(queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndType, params);
     }
 
-
     /*
         * This method that returns a list of all the EcentaNotifications for a Specific B2BCustomer
         * Also specific Priority of the EcentaNotification
      */
-    @Override
-    public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificPriority(B2BCustomerModel b2BCustomerModel, String ecentaNotificationPriority) {
+    private List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificPriority(B2BCustomerModel b2BCustomerModel, String ecentaNotificationPriority) {
+        this.b2BCustomerModel = b2BCustomerModel;
+        this.ecentaNotificationPriority = ecentaNotificationPriority;
 
         final String queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndPriority =
                 "SELECT * FROM {" + EcentaNotificationModel._TYPECODE + "} " +
@@ -115,7 +139,8 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         return getEcentaNotificationModels(queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndPriority, params);
     }
 
-    /*  Method returning all the Notification for a B2BCustomer having Notifications marked as High Priority*/
+    /*  Method returning all the Notification for a B2BCustomer having Notifications marked as High Priority */
+    @Override
     public List<EcentaNotificationModel> findAllNotificationForHighPriority(B2BCustomerModel b2BCustomerModel)
     {
         List<EcentaNotificationModel> fetchedNotifications = findAllNotificationForSpecificB2bCustomerAndSpecificPriority(b2BCustomerModel, "High");
@@ -126,7 +151,8 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             return Collections.emptyList();
     }
 
-    /*  Method returning all the Notification for a B2BCustomer having Notifications Type OrderManagement*/
+    /*  Method returning all the Notification for a B2BCustomer having Notifications Type OrderManagement */
+    @Override
     public List<EcentaNotificationModel> findAllNotificationForTypeOrderManagement(B2BCustomerModel b2BCustomerModel)
     {
         List<EcentaNotificationModel> fetchedNotifications = findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomerModel, "OrderManagement");
@@ -137,7 +163,8 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             return Collections.emptyList();
     }
 
-    /*  Method returning all the Notification for a B2BCustomer having Notifications Type News*/
+    /*  Method returning all the Notification for a B2BCustomer having Notifications Type News */
+    @Override
     public List<EcentaNotificationModel> findAllNotificationForTypeNews(B2BCustomerModel b2BCustomerModel)
     {
         List<EcentaNotificationModel> fetchedNotifications = findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomerModel, "News");
@@ -148,7 +175,8 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             return Collections.emptyList();
     }
 
-    /*  Method returning all the Notification for a B2BCustomer having Notifications Type ServiceTickets*/
+    /*  Method returning all the Notification for a B2BCustomer having Notifications Type ServiceTickets */
+    @Override
     public List<EcentaNotificationModel> findAllNotificationForTypeServiceTickets(B2BCustomerModel b2BCustomerModel)
     {
         List<EcentaNotificationModel> fetchedNotifications = findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomerModel, "ServiceTickets");
@@ -159,7 +187,8 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             return Collections.emptyList();
     }
 
-    /*  Method returning all the Notification for a B2BCustomer having Notifications Type WorkFlow*/
+    /*  Method returning all the Notification for a B2BCustomer having Notifications Type WorkFlow */
+    @Override
     public List<EcentaNotificationModel> findAllNotificationForTypeWorkFlow(B2BCustomerModel b2BCustomerModel)
     {
         List<EcentaNotificationModel> fetchedNotifications = findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomerModel, "WorkFlow");
@@ -170,7 +199,8 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             return Collections.emptyList();
     }
 
-    /* Method returning all the EcentaNotifications for a B2BCustomer with specific Type/Priority */
+//    /* Method returning all the EcentaNotifications for a B2BCustomer with specific Type/Priority */
+    @Override
     public List<EcentaNotificationModel> findAllEcentaNotificationForAB2bCustomerWithSpecificOrPriority(B2BCustomerModel b2BCustomer, String filterForNotification )
     {
         final String PRIORITY_HIGH_NOTIFICATIONS = "High";
@@ -224,18 +254,4 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
     public void setFlexibleSearchService(final FlexibleSearchService flexibleSearchService){
         this.flexibleSearchService = flexibleSearchService;
     }
-
-    public B2BCustomerModel getB2BCustomerModel() {
-        return b2BCustomerModel;
-    }
-    public void setB2BCustomerModel(B2BCustomerModel b2BCustomerModel) {
-        this.b2BCustomerModel = b2BCustomerModel;
-    }
 }
-
-/*
-* SELECT * FROM {EcentaNotification} WHERE
-* SELECT * FROM {B2bCustomer}
-* SELECT * FROM {EcentaNotification} WHERE {EcentaNotification.b2bCustomer} =
-*  SELECT * FROM {EcentaNotification} WHERE {EcentaNotification.b2bCustomer} = 'william.hunter@rustic-hw.com'
-* */
