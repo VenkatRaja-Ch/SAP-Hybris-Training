@@ -13,21 +13,15 @@ public interface CustomEcentaNotificationsDAO{
     public List<EcentaNotificationModel> findAllNotificationOlderThanSpecificDays(final Date oldDate);
 
     // Task: 6 -> DAO
-    public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomer(B2BCustomerModel b2BCustomerModel);
-
-    public List<EcentaNotificationModel> findAllNotificationForHighPriority(B2BCustomerModel b2BCustomerModel);
-
-    public List<EcentaNotificationModel> findAllNotificationForTypeOrderManagement(B2BCustomerModel b2BCustomerModel);
-
-    public List<EcentaNotificationModel> findAllNotificationForTypeNews(B2BCustomerModel b2BCustomerModel);
-
-    public List<EcentaNotificationModel> findAllNotificationForTypeServiceTickets(B2BCustomerModel b2BCustomerModel);
-
-    public List<EcentaNotificationModel> findAllNotificationForTypeWorkFlow(B2BCustomerModel b2BCustomerModel);
-
+    /* Finds the B2BCustomer using the passed uid */
     public List<B2BCustomerModel> findB2BCustomerUsingUID(final String b2bCustomerUid);
 
-    // todo: To be asked which would be better
-    public List<EcentaNotificationModel> findAllEcentaNotificationForAB2bCustomerWithSpecificOrPriority
-            (B2BCustomerModel b2BCustomer, String filterForNotification );
+    /* Find the Ecenta Notification for the passed B2B Customer */
+    public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomer(B2BCustomerModel b2BCustomerModel);
+
+    /* Finds the Ecenta Notification for the passed B2B Customer with Specific Type */
+    public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificType(B2BCustomerModel b2BCustomerModel, String ecentaNotificationType);
+
+    /* Finds the Ecenta Notification for the passed B2B Customer with Specific Priority */
+    public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificPriority(B2BCustomerModel b2BCustomerModel, String ecentaNotificationPriority);
 }

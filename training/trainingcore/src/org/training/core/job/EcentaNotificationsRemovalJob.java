@@ -34,8 +34,6 @@ import org.training.core.dao.CustomEcentaNotificationsDAO;
 
 public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<EcentaNotificationRemovalCronJobModel> {
 
-    // TODO: Ask the Mentor regarding the SITE_UID concept and what would be the SITE_UID for this task
-
     public static final String SITE_UID = "apparel-uk";
     private CustomEcentaNotificationsDAO customEcentaNotificationsDAO;
     private ModelService modelService;
@@ -56,7 +54,6 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         final List<EcentaNotificationModel> ecentaNotificationModelList = customEcentaNotificationsDAO.findAllNotificationOlderThanSpecificDays(oldDate);       // list of entities which are older than one year
         LOG.info("EcentaNotifications Which are older than specific date size: " + ecentaNotificationModelList.size());
         for(final EcentaNotificationModel ecentaNotificationModel : ecentaNotificationModelList) {
-//            if (CollectionUtils.isEmpty(ecentaNotificationModel.getRead())) {
 
             if(!(null == ecentaNotificationModel.getRead())) {
 
@@ -91,7 +88,7 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         LOG.info("Transaction line has been executed!");
 
         try{
-            final SolrFacetSearchConfigModel facetSearchConfigModel = baseSiteService.getBaseSiteForUID(SITE_UID).getSolrFacetSearchConfiguration();  //todo: check SITE_UID
+            final SolrFacetSearchConfigModel facetSearchConfigModel = baseSiteService.getBaseSiteForUID(SITE_UID).getSolrFacetSearchConfiguration();
             final FacetSearchConfig facetSearchConfig = facetSearchConfigService.getConfiguration(facetSearchConfigModel.getName());
             indexerService.performFullIndex(facetSearchConfig);
         }
@@ -100,21 +97,68 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         }
 
 
-        LOG.info("facetSearchConfigModel line has been executed!");
+        LOG.info(
+                "\n\n\n"
+                +"facetSearchConfigModel line has been executed!"
+                +"\n\n\n"
+        );
 
         /*  Testcase for executing the DAO Task starts    */
+
         /* Task 1: Fetching a B2BCustomer */
-        final B2BCustomerModel b2BCustomer1 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("william.hunter@rustic-hw.com").get(0);
-        final B2BCustomerModel b2BCustomer2 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("ulf.becker@rustic-hw.com").get(0);
-        final B2BCustomerModel b2BCustomer3 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("mingmei.wang@pronto-hw.com").get(0);
+        final B2BCustomerModel b2BCustomer1 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("mingmei.wang@pronto-hw.com").get(0);
+        final B2BCustomerModel b2BCustomer2 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("william.hunter@rustic-hw.com").get(0);
+        final B2BCustomerModel b2BCustomer3 = customEcentaNotificationsDAO.findB2BCustomerUsingUID("ulf.becker@rustic-hw.com").get(0);
+        LOG.info("\n\n\n"
+                + b2BCustomer1.getName() + "\t"
+                + b2BCustomer2.getName() + "\t"
+                + b2BCustomer3.getName() + "\t"
+                + "\n\n\n"
+        );
 
-        /* Task 2: Fetching the EcentaNotifications for that B2BCustomer */
+        /* Task 2: Fetching all notification and testing the methods */
+        // Fetch B2BCustomer Notification
+        final List<EcentaNotificationModel> b2BCustomer1NotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomer( b2BCustomer1 );
+        // Log Notification
+        logEcentaNotification(b2BCustomer1NotificationList);
 
-        //todo: Use the fetched B2BCustomer to extract all the EcentaNotifications associated with fetched B2BCustomer.
+        // Fetch Type&Customer Notification
+        final List<EcentaNotificationModel> typeAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomer2,"OrderManagement");
+        // Log Notification
+        logEcentaNotification(typeAndB2bCustomerNotificationList);
+
+        // Fetch Priority&Customer Notification
+        final List<EcentaNotificationModel> priorityAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificPriority(b2BCustomer3,"High");
+        // Log Notification
+        logEcentaNotification(priorityAndB2bCustomerNotificationList);
 
         /*  Testcase for executing the DAO Task ends    */
 
         return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
+    }
+
+    // TEST-CASE: EcentaNotification Logging function
+    public void logEcentaNotification(List<EcentaNotificationModel> passedList)
+    {
+        if(!(null == passedList)) {
+            for (final EcentaNotificationModel ecentaNotificationModel : passedList) {
+                LOG.info(
+                        "\n\n\n"
+                        + ecentaNotificationModel.getId() + "\t"
+                        + ecentaNotificationModel.getB2bCustomer().getName() + "\t"
+                        + ecentaNotificationModel.getType() + "\t"
+                        + ecentaNotificationModel.getPriority() + "\t"
+                        + "\n\n\n"
+                );
+            }
+        } else
+        {
+            LOG.info(
+                    "\n\n\n"
+                    + "empty list / no notifications found!"
+                    + "\n\n\n"
+            );
+        }
     }
 
     public CustomEcentaNotificationsDAO getCustomEcentaNotificationsDAO(){
