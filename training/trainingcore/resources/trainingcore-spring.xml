@@ -560,4 +560,10 @@
 		<property name="modelService" ref="modelService"/>
 	</bean>
 
+	<!-- CRUD Service (ModelService) -->
+	<alias alias="ecentaNotificationCRUDService" name="customEcentaNotificationCRUDService"/>
+	<bean id="customEcentaNotificationCRUDService" class="org.training.core.crud.impl.CustomEcentaNotificationCRUDServiceImpl">
+		<property name="modelService" ref="modelService"/>
+	</bean>
+
 </beans>
