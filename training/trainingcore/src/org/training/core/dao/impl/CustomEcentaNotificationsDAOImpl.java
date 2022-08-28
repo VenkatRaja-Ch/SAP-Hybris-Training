@@ -29,10 +29,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             B2BCUSTOMER_THROUGH_PARAMS;
 
     // Task: 4 -> CronJobs
-    /*
-        * Logic to retrieve EcentaNotification entities which are older than 365 days (1 year) using FlexibleSearchService
-        * Return the List of EcentaNotification entities retrieved
-     */
+    // Return the EcentaNotification Entities which are older than 365 days (1 year) using the FlexibleSearchService
     @Override
     public List<EcentaNotificationModel> findAllNotificationOlderThanSpecificDays(Date oldDate)
     {
@@ -48,7 +45,6 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
 
         return searchResult.getResult();
     }
-
 
     // Task: 6 -> DAO
     // Fetching B2BCustomer using UID
@@ -85,9 +81,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         }
     }
 
-    /*
-        * This method that returns a list of all the EcentaNotifications for a Specific B2BCustomer
-    */
+    // Filtering the query to fetch EcentaNotification for a specific B2BCustomer.
     @Override
     public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomer(B2BCustomerModel b2BCustomerModel) {
 
@@ -97,10 +91,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         return getEcentaNotification(ECENTA_NOTIFICATION_FOR_B2BCUSTOMER_SEARCH_QUERY,params);
     }
 
-    /*
-        * This method that returns a list of all the EcentaNotifications for a Specific B2BCustomer
-        * Also specific Type of the EcentaNotification
-     */
+    // Filtering the query to fetch EcentaNotification for Specific B2BCustomer with Specific Type
     @Override
     public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificType(B2BCustomerModel b2BCustomerModel, String ecentaNotificationType) {
 
@@ -140,10 +131,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         return getEcentaNotification(queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndType, params);
     }
 
-    /*
-        * This method that returns a list of all the EcentaNotifications for a Specific B2BCustomer
-        * Also specific Priority of the EcentaNotification
-     */
+    // Filtering the query to fetch EcentaNotification for Specific B2BCustomer with Specific Priority
     @Override
     public List<EcentaNotificationModel> findAllNotificationForSpecificB2bCustomerAndSpecificPriority(B2BCustomerModel b2BCustomerModel, String ecentaNotificationPriority) {
 
@@ -177,9 +165,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
         return getEcentaNotification(queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndPriority, params);
     }
 
-    /*
-        * Getters and Setters
-     */
+    // GETTERS & SETTERS
     public FlexibleSearchService getFlexibleSearchService(){
         return flexibleSearchService;
     }
