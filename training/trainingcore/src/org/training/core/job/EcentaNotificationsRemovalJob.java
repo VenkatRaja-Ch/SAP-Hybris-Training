@@ -141,14 +141,16 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
     public void logEcentaNotification(List<EcentaNotificationModel> passedList)
     {
         if(!(null == passedList)) {
+            LOG.info("ID" + "\t" + "NAME" + "\t" + "TYPE" + "\t" + "PRIORITY" + "\t" + "TITLE" + "\n");
             for (final EcentaNotificationModel ecentaNotificationModel : passedList) {
                 LOG.info(
-                        "\n\n\n"
+                        "\n"
                         + ecentaNotificationModel.getId() + "\t"
                         + ecentaNotificationModel.getB2bCustomer().getName() + "\t"
                         + ecentaNotificationModel.getType() + "\t"
                         + ecentaNotificationModel.getPriority() + "\t"
-                        + "\n\n\n"
+                        + ecentaNotificationModel.getTitle() + "\t"
+                        + "\n"
                 );
             }
         } else
