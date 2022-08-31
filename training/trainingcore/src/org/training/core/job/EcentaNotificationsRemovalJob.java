@@ -18,12 +18,8 @@ import de.hybris.platform.servicelayer.cronjob.PerformResult;
 import de.hybris.platform.servicelayer.exceptions.ModelRemovalException;
 import de.hybris.platform.servicelayer.model.ModelService;
 import de.hybris.platform.site.BaseSiteService;
-import de.hybris.platform.solrfacetsearch.config.FacetSearchConfig;
 import de.hybris.platform.solrfacetsearch.config.FacetSearchConfigService;
-import de.hybris.platform.solrfacetsearch.config.exceptions.FacetConfigServiceException;
 import de.hybris.platform.solrfacetsearch.indexer.IndexerService;
-import de.hybris.platform.solrfacetsearch.indexer.exceptions.IndexerException;
-import de.hybris.platform.solrfacetsearch.model.config.SolrFacetSearchConfigModel;
 import de.hybris.platform.tx.Transaction;
 
 import java.util.*;
@@ -34,7 +30,6 @@ import org.training.core.dao.CustomEcentaNotificationsDAO;
 
 public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<EcentaNotificationRemovalCronJobModel> {
 
-    public static final String SITE_UID = "apparel-uk";
     private CustomEcentaNotificationsDAO customEcentaNotificationsDAO;
     private ModelService modelService;
     private IndexerService indexerService;
@@ -48,7 +43,7 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
 
         final int noOfDaysOldToRemove = ecentaNotificationRemovalCronJobModel.getXDaysOld();
         final Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -noOfDaysOldToRemove);
+        cal.add(Calendar.DAY_OF_MONTH, -noOfDaysOldToRemove); //todo: check
         final Date oldDate = cal.getTime();
         final List<EcentaNotificationModel> ecentaNotificationModelListToBeDeleted = new ArrayList<>();
         final List<EcentaNotificationModel> ecentaNotificationModelList = customEcentaNotificationsDAO.findAllNotificationOlderThanSpecificDays(oldDate);       // list of entities which are older than one year
@@ -86,16 +81,6 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
             }
         }
         LOG.info("Transaction line has been executed!");
-
-        try{
-            final SolrFacetSearchConfigModel facetSearchConfigModel = baseSiteService.getBaseSiteForUID(SITE_UID).getSolrFacetSearchConfiguration();
-            final FacetSearchConfig facetSearchConfig = facetSearchConfigService.getConfiguration(facetSearchConfigModel.getName());
-            indexerService.performFullIndex(facetSearchConfig);
-        }
-        catch (final FacetConfigServiceException | IndexerException e){
-            LOG.error("Could not index the product --> " + e);
-        }
-
 
         LOG.info(
                 "\n\n\n"
