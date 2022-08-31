@@ -1,14 +1,15 @@
 package org.training.core.crud;
 
-
 import org.training.core.model.EcentaNotificationModel;
 
-import java.util.List;
+public interface CustomEcentaNotificationCRUDService
+{
 
-public interface CustomEcentaNotificationCRUDService{
+    EcentaNotificationModel createEcentaNotification();
 
-    public List<EcentaNotificationModel> createEcentaNotification();
-    public List<EcentaNotificationModel> updateEcentaNotification();
-    public List<EcentaNotificationModel> cloneEcentaNotification();
-    public List<EcentaNotificationModel> deleteEcentaNotification();
+    void updateEcentaNotification(final EcentaNotificationModel currentEcentaNotificationItem);
+
+    EcentaNotificationModel cloneEcentaNotification(final EcentaNotificationModel currentEcentaNotificationItem);
+
+    void deleteEcentaNotification(final EcentaNotificationModel currentEcentaNotificationList);
 }
