@@ -9,18 +9,13 @@ package org.training.core.job;
 */
 
 import de.hybris.platform.b2b.model.B2BCustomerModel;
+import org.training.core.crud.CustomEcentaNotificationCRUDService;
 import org.training.core.model.EcentaNotificationModel;
 import de.hybris.platform.cronjob.enums.CronJobResult;
 import de.hybris.platform.cronjob.enums.CronJobStatus;
 import org.training.core.model.EcentaNotificationRemovalCronJobModel;
 import de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable;
 import de.hybris.platform.servicelayer.cronjob.PerformResult;
-import de.hybris.platform.servicelayer.exceptions.ModelRemovalException;
-import de.hybris.platform.servicelayer.model.ModelService;
-import de.hybris.platform.site.BaseSiteService;
-import de.hybris.platform.solrfacetsearch.config.FacetSearchConfigService;
-import de.hybris.platform.solrfacetsearch.indexer.IndexerService;
-import de.hybris.platform.tx.Transaction;
 
 import java.util.*;
 
@@ -31,10 +26,7 @@ import org.training.core.dao.CustomEcentaNotificationsDAO;
 public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<EcentaNotificationRemovalCronJobModel> {
 
     private CustomEcentaNotificationsDAO customEcentaNotificationsDAO;
-    private ModelService modelService;
-    private IndexerService indexerService;
-    private FacetSearchConfigService facetSearchConfigService;
-    private BaseSiteService baseSiteService;
+    private CustomEcentaNotificationCRUDService customEcentaNotificationCRUDService;
 
     private final static Logger LOG = Logger.getLogger(EcentaNotificationsRemovalJob.class.getName());
 
@@ -50,43 +42,27 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         LOG.info("EcentaNotifications Which are older than specific date size: " + ecentaNotificationModelList.size());
         for(final EcentaNotificationModel ecentaNotificationModel : ecentaNotificationModelList) {
 
-            if(!(null == ecentaNotificationModel.getRead())) {
-
-                if (!Boolean.TRUE.equals(ecentaNotificationModel.getRead())) {
-
-                    ecentaNotificationModel.setRead(Boolean.TRUE);                          // todo: marking them as read
-                    ecentaNotificationModel.setDeleted(Boolean.TRUE);                       // todo: marking them as deleted
-                    ecentaNotificationModelListToBeDeleted.add(ecentaNotificationModel);    // todo: adding them to a list
+            if(!Objects.isNull(ecentaNotificationModel.getRead()))
+            {
+                if (!Boolean.TRUE.equals(ecentaNotificationModel.getRead()))
+                {
+                    ecentaNotificationModel.setRead(Boolean.TRUE);                          // marking them as read
+                    ecentaNotificationModel.setDeleted(Boolean.TRUE);                       // marking them as deleted
+                    ecentaNotificationModelListToBeDeleted.add(ecentaNotificationModel);    // adding them to a list
                 }
             } else {
                 LOG.info("EcentaNotification Entity -> " + ecentaNotificationModel + " has null value in read attribute");
             }
         }
 
-        if(!CollectionUtils.isEmpty(ecentaNotificationModelListToBeDeleted)){
-
-            Transaction tx = null;
-            try {
-                tx = Transaction.current();
-                tx.begin();
-                getModelService().saveAll(ecentaNotificationModelListToBeDeleted);
-                tx.commit();
-            }
-            catch (final ModelRemovalException e){
-
-                if(null != tx){
-                    tx.rollback();
-                }
-                LOG.error("Could not remove the product List --> " + e);
+        if(!CollectionUtils.isEmpty(ecentaNotificationModelListToBeDeleted))
+        {
+            for(final EcentaNotificationModel currentEcentaNotificationItem : ecentaNotificationModelListToBeDeleted)
+            {
+                // testing for Task: 7 -> ModelService
+                getCustomEcentaNotificationCRUDService().updateEcentaNotification(currentEcentaNotificationItem);
             }
         }
-        LOG.info("Transaction line has been executed!");
-
-        LOG.info(
-                "\n\n\n"
-                +"facetSearchConfigModel line has been executed!"
-                +"\n\n\n"
-        );
 
         /*  Testcase for executing the DAO Task starts    */
 
@@ -117,7 +93,27 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         // Log Notification
         logEcentaNotification(priorityAndB2bCustomerNotificationList);
 
+        LOG.info("\nDAO task successfully tested!\n");
         /*  Testcase for executing the DAO Task ends    */
+
+        /*  TestCase for testing ModelService Task starts */
+
+        // testing the function for creating notification
+        LOG.info("\nTesting For Creating the notification\n");
+        EcentaNotificationModel newEcentaNotificationItem = getCustomEcentaNotificationCRUDService().createEcentaNotification();
+        getCustomEcentaNotificationCRUDService().updateEcentaNotification(newEcentaNotificationItem);
+        LOG.info("Creation Function passed!!");
+
+        // testing the function for cloning the notification
+        LOG.info("\nTesting For Cloning the notification\nFetched Notification:" + typeAndB2bCustomerNotificationList.get(0)+"\nExecuting the function for Cloning");
+        getCustomEcentaNotificationCRUDService().cloneEcentaNotification(typeAndB2bCustomerNotificationList.get(0));
+        LOG.info("Cloning Function Executed:\n");
+
+        // testing the function for deleting the notification
+        LOG.info("\nTesting For Deleting the notification\nFetched Notification:" + priorityAndB2bCustomerNotificationList.get(0)+"\nExecuting the function for deletion");
+        getCustomEcentaNotificationCRUDService().deleteEcentaNotification(priorityAndB2bCustomerNotificationList.get(0));
+        LOG.info("Deletion Function Executed:\n"+((Objects.isNull(priorityAndB2bCustomerNotificationList.get(0)))?"No Item Present":priorityAndB2bCustomerNotificationList.get(0)));
+        /*  TestCase for testing ModelService Task Ends */
 
         return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
     }
@@ -156,46 +152,11 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         this.customEcentaNotificationsDAO = customEcentaNotificationsDAO;
     }
 
-    public ModelService getModelService(){
-        return modelService;
+    public CustomEcentaNotificationCRUDService getCustomEcentaNotificationCRUDService() {
+        return customEcentaNotificationCRUDService;
     }
 
-//    @Override
-    public void setModelService(final ModelService modelService){
-        this.modelService = modelService;
+    public void setCustomEcentaNotificationCRUDService(CustomEcentaNotificationCRUDService customEcentaNotificationCRUDService) {
+        this.customEcentaNotificationCRUDService = customEcentaNotificationCRUDService;
     }
-
-    public IndexerService getIndexerService()
-    {
-        return indexerService;
-    }
-
-
-    public void setIndexerService(final IndexerService indexerService)
-    {
-        this.indexerService = indexerService;
-    }
-
-
-    public FacetSearchConfigService getFacetSearchConfigService()
-    {
-        return facetSearchConfigService;
-    }
-
-
-    public void setFacetSearchConfigService(final FacetSearchConfigService facetSearchConfigService)
-    {
-        this.facetSearchConfigService = facetSearchConfigService;
-    }
-
-    public BaseSiteService getBaseSiteService()
-    {
-        return baseSiteService;
-    }
-
-    public void setBaseSiteService(final BaseSiteService baseSiteService)
-    {
-        this.baseSiteService = baseSiteService;
-    }
-
 }
