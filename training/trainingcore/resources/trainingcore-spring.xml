@@ -549,10 +549,7 @@
 	<bean id="ecentaNotificationsRemovalJob" class="org.training.core.job.EcentaNotificationsRemovalJob"
 		  parent="abstractJobPerformable">
 		<property name="customEcentaNotificationsDAO" ref="customEcentaNotificationsDao"/>
-		<property name="modelService" ref="modelService"/>
-		<property name="indexerService" ref="indexerService"/>
-		<property name="facetSearchConfigService" ref="facetSearchConfigService"/>
-		<property name="baseSiteService" ref="baseSiteService"/>
+		<property name="customEcentaNotificationCRUDService" ref="customEcentaNotificationCRUDService"/>
 	</bean>
 
 	<!-- B2BUnit Attribute handler -->
