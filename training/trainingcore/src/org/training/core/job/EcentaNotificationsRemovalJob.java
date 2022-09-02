@@ -96,25 +96,6 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         LOG.info("\nDAO task successfully tested!\n");
         /*  Testcase for executing the DAO Task ends    */
 
-        /*  TestCase for testing ModelService Task starts */
-
-        // testing the function for creating notification
-        LOG.info("\nTesting For Creating the notification\n");
-        EcentaNotificationModel newEcentaNotificationItem = getCustomEcentaNotificationCRUDService().createEcentaNotification();
-        getCustomEcentaNotificationCRUDService().updateEcentaNotification(newEcentaNotificationItem);
-        LOG.info("Creation Function passed!!");
-
-        // testing the function for cloning the notification
-        LOG.info("\nTesting For Cloning the notification\nFetched Notification:" + typeAndB2bCustomerNotificationList.get(0)+"\nExecuting the function for Cloning");
-        getCustomEcentaNotificationCRUDService().cloneEcentaNotification(typeAndB2bCustomerNotificationList.get(0));
-        LOG.info("Cloning Function Executed:\n");
-
-        // testing the function for deleting the notification
-        LOG.info("\nTesting For Deleting the notification\nFetched Notification:" + priorityAndB2bCustomerNotificationList.get(0)+"\nExecuting the function for deletion");
-        getCustomEcentaNotificationCRUDService().deleteEcentaNotification(priorityAndB2bCustomerNotificationList.get(0));
-        LOG.info("Deletion Function Executed:\n"+((Objects.isNull(priorityAndB2bCustomerNotificationList.get(0)))?"No Item Present":priorityAndB2bCustomerNotificationList.get(0)));
-        /*  TestCase for testing ModelService Task Ends */
-
         return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
     }
 
