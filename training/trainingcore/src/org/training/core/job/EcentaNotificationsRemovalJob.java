@@ -96,6 +96,10 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         LOG.info("\nDAO task successfully tested!\n");
         /*  Testcase for executing the DAO Task ends    */
 
+        /*  Testcases for ModelService Task */
+        getCustomEcentaNotificationCRUDService().cloneEcentaNotification(b2BCustomer1NotificationList.get(0));
+        LOG.info("\nModelService Task tested!");
+
         return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
     }
 

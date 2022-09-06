@@ -182,4 +182,18 @@
 	</bean>
 
 	<bean id="genderData" class="org.training.facades.product.data.GenderData" scope="prototype"/>
+
+	<!-- Task 8: Populators and Converters-->
+	<!-- Converter bean -->
+	<bean id="ecentaNotificationsDataConverter" parent="abstractPopulatingConverter">
+		<property name="targetClass" value="java.util.ArrayList"/>
+		<property name="populators">
+			<list merge="true">
+				<ref bean="ecentaNotificationsDataPopulator"/>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Populator bean -->
+	<bean id="ecentaNotificationsDataPopulator" class="org.training.facades.populators.EcentaNotificationsDataPopulator"/>
 </beans>

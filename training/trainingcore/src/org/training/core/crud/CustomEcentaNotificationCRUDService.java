@@ -9,7 +9,7 @@ public interface CustomEcentaNotificationCRUDService
 
     void updateEcentaNotification(final EcentaNotificationModel currentEcentaNotificationItem);
 
-    EcentaNotificationModel cloneEcentaNotification(final EcentaNotificationModel currentEcentaNotificationItem);
+    void cloneEcentaNotification(final EcentaNotificationModel currentEcentaNotificationItem);
 
     void deleteEcentaNotification(final EcentaNotificationModel currentEcentaNotificationList);
 }

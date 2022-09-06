@@ -14,7 +14,8 @@
         <requires-extension name="acceleratorcms"/>
         <requires-extension name="solrserver"/>
         <requires-extension name="b2bcommerce"/>
-                		
+        <requires-extension name="commercefacades"/>
+
         
         <coremodule generated="true" manager="org.training.core.jalo.TrainingCoreManager" packageroot="org.training.core"/>
                 		
