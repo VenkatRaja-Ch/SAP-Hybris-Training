@@ -12,4 +12,20 @@
 		<property name="code" type="String"/>
 		<property name="name" type="String"/>
 	</bean>
+
+	<!-- Task 8: Convertors & Populators -->
+	<!-- DTO bean for EcentaNotification -->
+	<bean class="org.training.facades.product.data.EcentaNotificationData">
+		<property name="id" type="java.lang.String"/>
+		<property name="b2bCustomer" type="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+		<property name="date" type="java.util.Date"/>
+		<property name="type" type="org.training.core.enums.NotificationTypeEnumeration"/>
+		<property name="message" type="java.lang.String"/>
+		<property name="priority" type="org.training.core.enums.NotificationPriorityEnumeration"/>
+		<property name="read" type="java.lang.Boolean"/>
+		<property name="deleted" type="java.lang.Boolean"/>
+		<property name="title" type="java.lang.String"/>
+		<property name="b2bUnit" type="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData"/>
+	</bean>
+
 </beans>
