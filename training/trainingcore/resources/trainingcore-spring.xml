@@ -562,4 +562,25 @@
 		<property name="modelService" ref="modelService"/>
 	</bean>
 
+	<!-- Task 9: Interceptors and Key Generators -->
+	<!-- KeyGenerators for EcentaNotificationInitDefaultsInterceptor -->
+	<bean id="ecentaNotificationPersistentKeyGenerator"
+		  class="de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator"
+		  init-method="init">
+		<property name="digits"	value="9"/>
+		<property name="key"	value="0ab000cd0"/>
+		<property name="numeric" value="false"/>
+		<property name="type"	value="alphanumeric"/>
+	</bean>
+
+	<!-- Defining the Spring bean for the interceptor (EcentaNotificationInitDefaultsInterceptor) -->
+	<bean id="ecentaNotificationInitDefaultsInterceptor" class="org.training.core.interceptors.impl.EcentaNotificationInitDefaultsInterceptor">
+		<property name="ecentaNotificationPersistentKeyGenerator" ref="ecentaNotificationPersistentKeyGenerator"/>
+	</bean>
+
+	<!-- Mapping the interceptor and the model class -->
+	<bean id="ecentaNotificationInitDefaultsInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="ecentaNotificationInitDefaultsInterceptor"/>
+		<property name="typeCode" value="java.lang.String"/>
+	</bean>
 </beans>
