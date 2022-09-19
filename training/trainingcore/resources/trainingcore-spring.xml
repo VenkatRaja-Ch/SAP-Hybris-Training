@@ -581,9 +581,8 @@
 	<!-- Mapping the interceptor and the model class -->
 	<bean id="ecentaNotificationInitDefaultsInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
 		<property name="interceptor" ref="ecentaNotificationInitDefaultsInterceptor"/>
-		<property name="typeCode" value="java.lang.String"/>
+		<property name="typeCode" value="EcentaNotification"/>
 	</bean>
-
 
 	<!-- Defining the Spring bean for the interceptor (EcentaNotificationPrepareInterceptor) -->
 	<bean id="ecentaNotificationPrepareInterceptor" class="org.training.core.interceptors.impl.EcentaNotificationPrepareInterceptor"/>
@@ -591,6 +590,6 @@
 	<!-- Mapping the interceptor and the model class -->
 	<bean id="ecentaNotificationPrepareInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
 		<property name="interceptor" ref="ecentaNotificationPrepareInterceptor"/>
-		<property name="typeCode" value="java.lang.Boolean"/>
+		<property name="typeCode" value="EcentaNotification"/>
 	</bean>
 </beans>

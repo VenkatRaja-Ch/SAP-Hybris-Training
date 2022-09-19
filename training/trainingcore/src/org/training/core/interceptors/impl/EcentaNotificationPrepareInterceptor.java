@@ -7,7 +7,7 @@ import org.training.core.model.EcentaNotificationModel;
 
 import java.util.Objects;
 
-public class EcentaNotificationPrepareInterceptor  implements PrepareInterceptor<EcentaNotificationModel>
+public class EcentaNotificationPrepareInterceptor implements PrepareInterceptor<EcentaNotificationModel>
 {
     @Override
     public void onPrepare(EcentaNotificationModel currentEcentaNotificationItem, InterceptorContext interceptorContext) throws InterceptorException
