@@ -584,7 +584,6 @@
 		<property name="typeCode" value="EcentaNotification"/>
 	</bean>
 
-
 	<!-- Defining the Spring bean for the interceptor (EcentaNotificationPrepareInterceptor) -->
 	<bean id="ecentaNotificationPrepareInterceptor" class="org.training.core.interceptors.impl.EcentaNotificationPrepareInterceptor"/>
 
