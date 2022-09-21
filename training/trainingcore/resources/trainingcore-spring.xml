@@ -567,10 +567,11 @@
 	<bean id="ecentaNotificationPersistentKeyGenerator"
 		  class="de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator"
 		  init-method="init">
-		<property name="digits"	value="9"/>
-		<property name="key"	value="0ab000cd0"/>
-		<property name="numeric" value="false"/>
-		<property name="type"	value="alphanumeric"/>
+		<property name="key" value="${keygen.ecentaNotification.id.name}"/>
+		<property name="digits" value="${keygen.ecentaNotification.id.digits}"/>
+		<property name="start" value="${keygen.ecentaNotification.id.start}"/>
+		<property name="type" value="${keygen.ecentaNotification.id.type}"/>
+		<property name="template" value="${keygen.ecentaNotification.id.template}"/>
 	</bean>
 
 	<!-- Defining the Spring bean for the interceptor (EcentaNotificationInitDefaultsInterceptor) -->
