@@ -155,6 +155,64 @@
 
         </itemtype>
 
+        <!-- Task 10: Catalog Aware Items Task -->
+        <!-- item definition -->
+        <itemtype code="ServiceProduct" autocreate="true" generate="true">
+            <deployment table="ServiceProduct" typecode="20088"/>
+
+            <!-- Custom Properties for the Service Product -->
+            <custom-properties>
+                <property name="catalogItemType">
+                    <value>java.lang.Boolean.TRUE</value>
+                </property>
+                
+                <property name="catalogVersionAttributeQualifier">
+                    <value>catalogVersion</value>
+                </property>
+                
+                <property name="uniqueKeyAttributeQualifier">
+                    <value>id</value>
+                </property>
+            </custom-properties>
+
+            <!-- Attributes of the Service Product -->
+            <attributes>
+                <attribute qualifier="id" type="java.lang.String">
+                    <description>Unique identifier for ServiceProduct Catalog Aware item</description>
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                
+                <attribute qualifier="catalogVersion" type="CatalogVersion">
+                    <description>Catalog Version of Service Product</description>
+                    <modifiers/>
+                    <persistence type="property"/>
+                </attribute>
+
+                <attribute qualifier="name" type="java.lang.String">
+                    <description>Name of the Service Product</description>
+                    <modifiers/>
+                    <persistence type="property"/>
+                </attribute>
+                
+                <attribute qualifier="creationDate" type="java.util.Date">
+                    <description>Date of the Service Product</description>
+                    <modifiers/>
+                    <persistence type="property"/>
+                </attribute>
+
+                <attribute qualifier="description" type="java.lang.String">
+                    <description>Description of the Service Product</description>
+                    <modifiers/>
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+            </attributes>
+        </itemtype>
+
         <!-- TypeGroups are for structure of this file only -->
         <typegroup name="Apparel">
             <itemtype code="ApparelProduct" extends="Product"
