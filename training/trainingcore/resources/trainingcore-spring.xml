@@ -427,7 +427,7 @@
 		<property name="modelService" ref="modelService"/>
 		<property name="businessProcessService" ref="businessProcessService"/>
 	</bean>
-	
+
 	<bean id="quoteExpiredEventListener" class="org.training.core.event.QuoteExpiredEventListener"
 		  parent="abstractEventListener">
 		<property name="modelService" ref="modelService"/>
@@ -455,7 +455,7 @@
 		  class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
 		<property name="resource" value="classpath:/trainingcore/processes/quote/quote-seller-approval-process.xml"/>
 	</bean>
-	
+
 	<bean id="quotePostCancellationProcessDefinitionResource"
 		  class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
 		<property name="resource" value="classpath:/trainingcore/processes/quote/quote-post-cancellation-process.xml"/>
@@ -465,7 +465,7 @@
 		  class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
 		<property name="resource" value="classpath:/trainingcore/processes/quote/quote-to-expire-soon-email-process.xml"/>
 	</bean>
-	
+
 	<bean id="quoteExpiredProcessDefinitionResource"
 		  class="de.hybris.platform.processengine.definition.ProcessDefinitionResource" >
 		<property name="resource" value="classpath:/trainingcore/processes/quote/quote-expired-email-process.xml"/>
@@ -485,7 +485,7 @@
 		<property name="configurationService" ref="configurationService" />
 		<property name="timeService" ref="timeService" />
 	</bean>
-	
+
 	<bean id="quoteExpiredJobPerformable"
 		  class="org.training.core.job.QuoteExpiredJobPerformable"
 		  parent="abstractJobPerformable">
@@ -502,24 +502,24 @@
 	<import resource="/trainingcore/processes/quote/quote-buyer-process-spring.xml"/>
 	<import resource="/trainingcore/processes/quote/quote-salesrep-process-spring.xml"/>
 	<import resource="/trainingcore/processes/quote/quote-seller-approval-process-spring.xml"/>
-	
+
 	<import resource="/trainingcore/processes/quote/quote-to-expire-soon-email-process-spring.xml"/>
 	<import resource="/trainingcore/processes/quote/quote-expired-email-process-spring.xml"/>
 
 	<import resource="/trainingcore/processes/quote/quote-post-cancellation-process-spring.xml"/>
-	
+
 	<!-- Customer cleanup -->
 	<alias name="defaultCustomerCleanupRelatedObjectsAction" alias="customerCleanupRelatedObjectsAction"/>
 	<bean id="defaultCustomerCleanupRelatedObjectsAction" class="org.training.core.retention.impl.DefaultCustomerCleanupRelatedObjectsAction" parent="abstractExtensibleRemoveCleanupAction">
 		<property name="itemCleanupHooks" ref="customerCleanupHooks"/>
 	</bean>
-	
+
 	<!-- Cleanup the customers not owning any order currently and the current date has past deactivation date+retention date. Also removes customers audit records. -->
 	<alias name="defaultCustomerNotOwningOrdersRemoveCleanupAction" alias="customerNotOwningOrdersRemoveCleanupAction"/>
 	<bean id="defaultCustomerNotOwningOrdersRemoveCleanupAction" class="de.hybris.platform.retention.impl.DefaultExtensibleRemoveCleanupAction" parent="abstractExtensibleRemoveCleanupAction">
 		<property name="itemCleanupHooks" ref="customerCleanupHooks"/>
 	</bean>
-	
+
 	<!-- Order cleanup -->
 	<!-- Cleanup the order related objects and then remove order and its audit records. -->
 	<alias name="defaultOrderRemoveCleanupAction" alias="orderRemoveCleanupAction"/>
@@ -593,4 +593,27 @@
 		<property name="interceptor" ref="ecentaNotificationPrepareInterceptor"/>
 		<property name="typeCode" value="EcentaNotification"/>
 	</bean>
+
+	<!-- Task 11: CatalogAwareItems -->
+	<!-- Defining Key Generator for ServiceProduct -->
+	<bean id="serviceProductCodeGenerator" class="de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator" init-method="init">
+
+		<property name="key" value="${keygen.serviceProduct.id.name}"/>
+		<property name="digits" value="${keygen.serviceProduct.id.digit}"/>
+		<property name="start" value="${keygen.serviceProduct.id.start}"/>
+		<property name="type" value="${keygen.serviceProduct.id.type}"/>
+		<property name="template" value="${keygen.serviceProduct.id.template}"/>
+	</bean>
+
+	<!-- Defining the spring bean for the interceptor (ServiceProductInitDefaultInterceptor) -->
+	<bean id="serviceProductInitDefaultInterceptor" class="org.training.core.interceptors.impl.ServiceProductInitDefaultInterceptor">
+		<property name="serviceProductIdGenerator" ref="serviceProductCodeGenerator"/>
+	</bean>
+
+	<!-- Mapping the interceptor (ServiceProductInitDefaultInterceptor) -->
+	<bean id="serviceProductInitDefaultInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="serviceProductInitDefaultInterceptor"/>
+		<property name="typeCode" value="ServiceProduct"/>
+	</bean>
+
 </beans>
