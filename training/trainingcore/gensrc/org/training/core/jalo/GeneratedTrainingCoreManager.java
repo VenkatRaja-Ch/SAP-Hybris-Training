@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Sep 22, 2022, 1:49:20 AM                    ---
+ * --- Generated at Sep 22, 2022, 1:08:48 PM                    ---
  * ----------------------------------------------------------------
  */
 package org.training.core.jalo;
@@ -26,6 +26,7 @@ import org.training.core.jalo.ApparelStyleVariantProduct;
 import org.training.core.jalo.EcentaNotification;
 import org.training.core.jalo.EcentaNotificationRemovalCronJob;
 import org.training.core.jalo.ElectronicsColorVariantProduct;
+import org.training.core.jalo.ServiceProduct;
 
 /**
  * Generated class for type <code>TrainingCoreManager</code>.
@@ -208,6 +209,32 @@ public abstract class GeneratedTrainingCoreManager extends Extension
 	public ElectronicsColorVariantProduct createElectronicsColorVariantProduct(final Map attributeValues)
 	{
 		return createElectronicsColorVariantProduct( getSession().getSessionContext(), attributeValues );
+	}
+	
+	public ServiceProduct createServiceProduct(final SessionContext ctx, final Map attributeValues)
+	{
+		try
+		{
+			ComposedType type = getTenant().getJaloConnection().getTypeManager().getComposedType( TrainingCoreConstants.TC.SERVICEPRODUCT );
+			return (ServiceProduct)type.newInstance( ctx, attributeValues );
+		}
+		catch( JaloGenericCreationException e)
+		{
+			final Throwable cause = e.getCause();
+			throw (cause instanceof RuntimeException ?
+			(RuntimeException)cause
+			:
+			new JaloSystemException( cause, cause.getMessage(), e.getErrorCode() ) );
+		}
+		catch( JaloBusinessException e )
+		{
+			throw new JaloSystemException( e ,"error creating ServiceProduct : "+e.getMessage(), 0 );
+		}
+	}
+	
+	public ServiceProduct createServiceProduct(final Map attributeValues)
+	{
+		return createServiceProduct( getSession().getSessionContext(), attributeValues );
 	}
 	
 	/**

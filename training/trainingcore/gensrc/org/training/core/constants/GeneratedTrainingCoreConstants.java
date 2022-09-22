@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Sep 22, 2022, 1:49:20 AM                    ---
+ * --- Generated at Sep 22, 2022, 1:08:48 PM                    ---
  * ----------------------------------------------------------------
  */
 package org.training.core.constants;
@@ -24,6 +24,7 @@ public class GeneratedTrainingCoreConstants
 		public static final String ELECTRONICSCOLORVARIANTPRODUCT = "ElectronicsColorVariantProduct".intern();
 		public static final String NOTIFICATIONPRIORITYENUMERATION = "NotificationPriorityEnumeration".intern();
 		public static final String NOTIFICATIONTYPEENUMERATION = "NotificationTypeEnumeration".intern();
+		public static final String SERVICEPRODUCT = "ServiceProduct".intern();
 		public static final String SWATCHCOLORENUM = "SwatchColorEnum".intern();
 	}
 	public static class Attributes
