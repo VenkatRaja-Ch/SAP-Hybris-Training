@@ -18,5 +18,8 @@ public class EcentaNotificationPrepareInterceptor implements PrepareInterceptor<
                 currentEcentaNotificationItem.setDeleted(false);
             }
         }
+        else {
+            throw new InterceptorException("No object was found in currentEcentaNotificationItem");
+        }
     }
 }

@@ -1,6 +1,5 @@
 package org.training.core.crud.impl;
 
-import de.hybris.platform.core.GenericSearchConstants;
 import de.hybris.platform.servicelayer.model.ModelService;
 
 import org.apache.log4j.Logger;

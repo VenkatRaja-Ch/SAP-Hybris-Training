@@ -9,6 +9,7 @@ import org.training.core.model.ServiceProductModel;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 
 public class ServiceProductInitDefaultInterceptor implements InitDefaultsInterceptor<ServiceProductModel>
 {
@@ -19,15 +20,20 @@ public class ServiceProductInitDefaultInterceptor implements InitDefaultsInterce
     {
 
         /* setting the id for the ServiceProduct Item */
-        final String generatedServiceProductID = serviceProductIdGenerator.generate().toString();
-        currentServiceProductItem.setId( generatedServiceProductID );
+        if(!(Objects.isNull(currentServiceProductItem))) {
+            final String generatedServiceProductID = serviceProductIdGenerator.generate().toString();
+            currentServiceProductItem.setId(generatedServiceProductID);
 
-        /* setting the date for ServiceProduct  */
-        ZoneId currentSystemZoneId = ZoneId.systemDefault();  // fetching current Zone
-        LocalDate currentLocalDate = LocalDate.now();  // fetching current date
-        Date currentDate = Date.from(currentLocalDate.atStartOfDay(currentSystemZoneId).toInstant()); // converting it into Date format
-        // setting date to ServiceProduct
-        currentServiceProductItem.setCreationDate(currentDate);
+            /* setting the date for ServiceProduct  */
+            ZoneId currentSystemZoneId = ZoneId.systemDefault();  // fetching current Zone
+            LocalDate currentLocalDate = LocalDate.now();  // fetching current date
+            Date currentDate = Date.from(currentLocalDate.atStartOfDay(currentSystemZoneId).toInstant()); // converting it into Date format
+            // setting date to ServiceProduct
+            currentServiceProductItem.setCreationDate(currentDate);
+        }
+        else {
+            throw new InterceptorException("EcentaNotification item is null or not found.");
+        }
     }
 
     public PersistentKeyGenerator getServiceProductIdGenerator() {
