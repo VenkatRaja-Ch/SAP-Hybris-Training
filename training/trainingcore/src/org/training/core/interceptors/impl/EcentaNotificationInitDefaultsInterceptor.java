@@ -6,6 +6,8 @@ import de.hybris.platform.servicelayer.interceptor.InterceptorException;
 import de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator;
 import org.training.core.model.EcentaNotificationModel;
 
+import java.util.Objects;
+
 public class EcentaNotificationInitDefaultsInterceptor implements InitDefaultsInterceptor<EcentaNotificationModel>
 {
 
@@ -14,8 +16,14 @@ public class EcentaNotificationInitDefaultsInterceptor implements InitDefaultsIn
     @Override
     public void onInitDefaults(EcentaNotificationModel currentEcentaNotificationItem, InterceptorContext interceptorContext) throws InterceptorException
     {
-        final String alphaNumericID = ecentaNotificationPersistentKeyGenerator.generate().toString();
-        currentEcentaNotificationItem.setId( alphaNumericID );
+        if(!(Objects.isNull(currentEcentaNotificationItem)))
+        {
+            final String alphaNumericID = ecentaNotificationPersistentKeyGenerator.generate().toString();
+            currentEcentaNotificationItem.setId(alphaNumericID);
+        }
+        else {
+            throw new InterceptorException("No object was found in currentEcentaNotificationItem");
+        }
     }
 
     public PersistentKeyGenerator getEcentaNotificationPersistentKeyGenerator() {
