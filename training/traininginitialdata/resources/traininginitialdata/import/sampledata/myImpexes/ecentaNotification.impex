@@ -12,14 +12,3 @@ INSERT_UPDATE EcentaNotification; id[unique=true];title[translator=org.training.
 ;3;;
 ;4;;
 ;5;
-
-
-# WCMS Component impex
-#$contentCatalog = apparel-ukContentCatalog
-#$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Online])[default=$contentCatalog:Online]
-#
-#$productCatalog = apparelProductCatalog
-#$productCatalogName = Apparel Product Catalog
-#$productCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default=$productCatalog]), CatalogVersion.version[default=Online])[default=$productCatalog:Online]
-#
-#
