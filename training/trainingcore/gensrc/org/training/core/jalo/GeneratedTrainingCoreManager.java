@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Oct 11, 2022, 7:04:06 PM                    ---
+ * --- Generated at Oct 28, 2022, 1:02:58 PM                    ---
  * ----------------------------------------------------------------
  */
 package org.training.core.jalo;
@@ -24,6 +24,7 @@ import org.training.core.jalo.ApparelProduct;
 import org.training.core.jalo.ApparelSizeVariantProduct;
 import org.training.core.jalo.ApparelStyleVariantProduct;
 import org.training.core.jalo.EcentaNotification;
+import org.training.core.jalo.EcentaNotificationCMSComponent;
 import org.training.core.jalo.EcentaNotificationRemovalCronJob;
 import org.training.core.jalo.ElectronicsColorVariantProduct;
 import org.training.core.jalo.ServiceProduct;
@@ -157,6 +158,32 @@ public abstract class GeneratedTrainingCoreManager extends Extension
 	public EcentaNotification createEcentaNotification(final Map attributeValues)
 	{
 		return createEcentaNotification( getSession().getSessionContext(), attributeValues );
+	}
+	
+	public EcentaNotificationCMSComponent createEcentaNotificationCMSComponent(final SessionContext ctx, final Map attributeValues)
+	{
+		try
+		{
+			ComposedType type = getTenant().getJaloConnection().getTypeManager().getComposedType( TrainingCoreConstants.TC.ECENTANOTIFICATIONCMSCOMPONENT );
+			return (EcentaNotificationCMSComponent)type.newInstance( ctx, attributeValues );
+		}
+		catch( JaloGenericCreationException e)
+		{
+			final Throwable cause = e.getCause();
+			throw (cause instanceof RuntimeException ?
+			(RuntimeException)cause
+			:
+			new JaloSystemException( cause, cause.getMessage(), e.getErrorCode() ) );
+		}
+		catch( JaloBusinessException e )
+		{
+			throw new JaloSystemException( e ,"error creating EcentaNotificationCMSComponent : "+e.getMessage(), 0 );
+		}
+	}
+	
+	public EcentaNotificationCMSComponent createEcentaNotificationCMSComponent(final Map attributeValues)
+	{
+		return createEcentaNotificationCMSComponent( getSession().getSessionContext(), attributeValues );
 	}
 	
 	public EcentaNotificationRemovalCronJob createEcentaNotificationRemovalCronJob(final SessionContext ctx, final Map attributeValues)
