@@ -9,8 +9,6 @@ import de.hybris.platform.servicelayer.search.FlexibleSearchService;
 import de.hybris.platform.servicelayer.search.SearchResult;
 import de.hybris.platform.b2b.model.B2BCustomerModel;
 
-import org.training.core.enums.NotificationTypeEnumeration;
-import org.training.core.enums.NotificationPriorityEnumeration;
 import org.training.core.model.EcentaNotificationModel;
 import org.training.core.dao.CustomEcentaNotificationsDAO;
 
@@ -100,33 +98,9 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
                 " AND {" + EcentaNotificationModel.TYPE + "}" +
                 " = ?typeSentThroughParams";
 
-
         final Map<String, Object> params = new HashMap<>();
-
         params.put(B2BCUSTOMER_THROUGH_PARAMS, b2BCustomerModel);
-        switch (ecentaNotificationType)
-        {
-            case "OrderManagement":
-            {
-                params.put("typeSentThroughParams", NotificationTypeEnumeration.ORDERMANAGEMENT);
-                break;
-            }
-            case "News":
-            {
-                params.put("typeSentThroughParams", NotificationTypeEnumeration.NEWS);
-                break;
-            }
-            case "ServiceTickets":
-            {
-                params.put("typeSentThroughParams", NotificationTypeEnumeration.SERVICETICKETS);
-                break;
-            }
-            case "WorkFlow":
-            {
-                params.put("typeSentThroughParams", NotificationTypeEnumeration.WORKFLOW);
-                break;
-            }
-        }
+        params.put("typeSentThroughParams", ecentaNotificationType);
 
         return getEcentaNotification(queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndType, params);
     }
@@ -142,25 +116,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
 
         final Map<String, Object> params = new HashMap<>();
         params.put(B2BCUSTOMER_THROUGH_PARAMS, b2BCustomerModel);
-
-        switch(ecentaNotificationPriority)
-        {
-            case "Low":
-            {
-                params.put("prioritySentThroughParams", NotificationPriorityEnumeration.LOW);
-                break;
-            }
-            case "Normal":
-            {
-                params.put("prioritySentThroughParams", NotificationPriorityEnumeration.NORMAL);
-                break;
-            }
-            case "High":
-            {
-                params.put("prioritySentThroughParams", NotificationPriorityEnumeration.HIGH);
-                break;
-            }
-        }
+        params.put("prioritySentThroughParams", ecentaNotificationPriority);
 
         return getEcentaNotification(queryToGetAllEcentaNotificationsForSpecificB2bCustomerAndPriority, params);
     }
