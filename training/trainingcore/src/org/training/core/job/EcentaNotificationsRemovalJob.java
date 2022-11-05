@@ -10,6 +10,8 @@ package org.training.core.job;
 
 import de.hybris.platform.b2b.model.B2BCustomerModel;
 import org.training.core.crud.CustomEcentaNotificationCRUDService;
+import org.training.core.enums.NotificationPriorityEnumeration;
+import org.training.core.enums.NotificationTypeEnumeration;
 import org.training.core.model.EcentaNotificationModel;
 import de.hybris.platform.cronjob.enums.CronJobResult;
 import de.hybris.platform.cronjob.enums.CronJobStatus;
@@ -84,12 +86,12 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
         logEcentaNotification(b2BCustomer1NotificationList);
 
         // Fetch Type&Customer Notification
-        final List<EcentaNotificationModel> typeAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomer2,"OrderManagement");
+        final List<EcentaNotificationModel> typeAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomer2, NotificationTypeEnumeration.valueOf("OrderManagement"));
         // Log Notification
         logEcentaNotification(typeAndB2bCustomerNotificationList);
 
         // Fetch Priority&Customer Notification
-        final List<EcentaNotificationModel> priorityAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificPriority(b2BCustomer3,"High");
+        final List<EcentaNotificationModel> priorityAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificPriority(b2BCustomer3, NotificationPriorityEnumeration.valueOf("High"));
         // Log Notification
         logEcentaNotification(priorityAndB2bCustomerNotificationList);
 
