@@ -1,3 +1,38 @@
 UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
 
+#macros
+$contentCatalog=powertoolsContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$lang=en
+$siteResource=jar:org.training.initialdata.constants.TrainingInitialDataConstants&/traininginitialdata/import
 
+# creating a Content Page
+INSERT_UPDATE ContentPage; $contentCV[unique=true]; uid[unique=true]; name; masterTemplate(uid,$contentCV); label; approvalStatus(code)[default='approved'];
+;;ecentaNotificationPage; Ecenta Notification Page; ContentPage1Template; /ecentaNotification;;
+
+# creating CMS Link Component
+INSERT_UPDATE CMSLinkComponent; $contentCV[unique=true]; uid[unique=true]; name; linkName[lang=$lang]; url; &linkRef; target(code)[default='sameWindow'];
+;; EcentaNotificationPageLink; EcentaNotificationPageLink; "Ecenta Notification"; /ecentaNotifications; EcentaNotificationPageLink;;
+
+# creating CMS Navigation Nodes
+INSERT_UPDATE CMSNavigationNode; $contentCV[unique=true]; uid[unique=true]; name; parent(uid, $contentCV); &nodeRef;
+;; EcenatNotificationNavigationNode; EcentaNotificationNavigationNode; MyAccountNavNode; EcenatNotificationNavigationNode;
+
+# creating CMS Navigation Node Entry Point
+INSERT_UPDATE CMSNavigationEntry; $contentCV[unique=true]; uid[unique=true]; name; navigationNode(&nodeRef); item(&linkRef);
+;; EcentaNotificationNavigationEntry; EcentaNotificationNavigationEntry; EcenatNotificationNavigationNode; EcentaNotificationPageLink;
+
+# adding the EcentaNotificationCMSComponent
+INSERT_UPDATE EcentaNotificationCMSComponent; $contentCV[unique=true]; uid[unique=true]; name; &componentRef;
+;; EcentaNotificationCMSComponent; EcentaNotification Component; EcentaNotificationCMSComponent;
+
+# adding EcentaNotificationCMSComponent to the ContentSlot
+INSERT_UPDATE ContentSlot; $contentCV[unique=true]; uid[unique=true]; name; active; cmsComponents(&componentRef);
+;;EcentaNotificationSection1Slot; First Section1 Slot; true; EcentaNotificationCMSComponent;
+
+# adding ContentSlot to Page
+INSERT_UPDATE ContentSlotForPage; $contentCV[unique=true]; uid[unique=true]; position[unique=true]; page(uid,$contentCV)[unique=true][default='ecentaNotificationPage']; contentSlot(uid, $contentCV)[unique=true];
+;; EcentaNotificationSection1ForEcentaNotificationPage; Section1;; EcentaNotificationSection1Slot;
+
+INSERT_UPDATE CMSUserGroupRestriction; $contentCV[unique=true]; uid[unique=true]; name; userGroups(uid); includeSubgroups; components(&componentRef);
+;; EcentaNotificationB2bCustomerGroupRestriction; EcentaNotification B2bCustomer GroupRestriction; b2bcustomergroup; true; EcentaNotificationCMSComponent;
