@@ -196,4 +196,11 @@
 
 	<!-- Populator bean -->
 	<bean id="ecentaNotificationsDataPopulator" class="org.training.facades.populators.EcentaNotificationsDataPopulator"/>
+
+	<!-- Task 11: WCMS Component -->
+	<!-- EcentaNotificationCMSComponentFacades bean-->
+	<bean id="ecentaNotificationCMSComponentFacades" class="org.training.facades.cmsComponents.EcentaNotificationCMSComponentFacades">
+		<property name="customEcentaNotificationsDAO" ref="customEcentaNotificationsDao"/>
+		<property name="customEcentaNotificationCRUDService" ref="customEcentaNotificationCRUDService"/>
+	</bean>
 </beans>
