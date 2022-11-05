@@ -4,10 +4,10 @@
 # ImpEx for Importing CMS Content
 
 # Macros / Replacement Parameter definitions
-$contentCatalog=apparel-ukContentCatalog
-$contentCatalogName=Apparel UK Content Catalog
-$productCatalog=apparelProductCatalog
-$productCatalogName=Apparel Product Catalog
+$contentCatalog=powertoolsContentCatalog
+$contentCatalogName=Powertools Content Catalog
+$productCatalog=powertoolsProductCatalog
+$productCatalogName=Powertools Product Catalog
 
 $contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
 $productCV=catalogVersion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
