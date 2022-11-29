@@ -41,7 +41,7 @@ public class InitialDataSystemSetup extends AbstractSystemSetup
 	// path variables to impEx (myDeltas, myImpexes)
 	private static final String MY_IMPEXES_PATH = "/traininginitialdata/import/sampledata/myImpexes/ecentaNotification.impex";
 	private static final String MY_DELTAS_PATH = "/traininginitialdata/import/sampledata/myDeltas/ecentaNotificationPatch.impex";
-	private static final String MY_ECENTA_NOTIFICATION_COMPONENT_IMPEX_PATH = "traininginitialdata/import/sampledata/myImpexes/ecentaNotificationComponent.impex";
+	private static final String MY_ECENTA_NOTIFICATION_COMPONENT_IMPEX_PATH = "traininginitialdata/import/sampledata/myDeltas/ecentaNotificationComponent.impex";
 
 	/**
 	 * Generates the Dropdown and Multi-select boxes for the project data import

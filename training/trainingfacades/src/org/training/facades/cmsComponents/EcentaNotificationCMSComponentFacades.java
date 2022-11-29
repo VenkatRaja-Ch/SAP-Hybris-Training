@@ -30,6 +30,14 @@ public class EcentaNotificationCMSComponentFacades
     }
 
     // get all EcentaNotifications
+    public List<EcentaNotificationModel> getAllEcentaNotificationsForB2bCustomer(B2BCustomerModel passedB2bCustomer){
+
+        return sortEcentaNotificationInDescWithCreationDate(
+                    getCustomEcentaNotificationsDAO()
+                    .findAllNotificationForSpecificB2bCustomer(passedB2bCustomer)
+        );
+    }
+
     // get all EcentaNotifications with High Priority
     public List<EcentaNotificationModel> getAllEcentaNotificationsWithHighPriority(B2BCustomerModel passedB2bCustomer){
 
@@ -95,6 +103,25 @@ public class EcentaNotificationCMSComponentFacades
                 )
                 .collect(Collectors.toList());
     }
+
+
+    // Counting unread Notifications from EcentaNotification List
+    public int countUnreadEcentaNotifications(List<EcentaNotificationModel> passedEcentaNotificationList){
+
+        int unreadNotifications = 0;
+
+        for(EcentaNotificationModel currentEcentaNotificationItem : passedEcentaNotificationList){
+
+            if(!(Objects.isNull(currentEcentaNotificationItem.getRead()))) {
+                if (!(currentEcentaNotificationItem.getRead())) {
+                    unreadNotifications++;
+                }
+            }
+        }
+
+        return unreadNotifications;
+    }
+
 
     /* GETTERS AND SETTERS */
     public CustomEcentaNotificationsDAO getCustomEcentaNotificationsDAO() {

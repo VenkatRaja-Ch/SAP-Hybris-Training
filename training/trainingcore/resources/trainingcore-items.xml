@@ -216,7 +216,8 @@
         <!-- EcentaNotificationComponent -->
         <itemtype code="EcentaNotificationCMSComponent"
                   extends="SimpleCMSComponent"
-                  jaloclass="org.training.core.jalo.EcentaNotificationCMSComponent">
+                  jaloclass="org.training.core.jalo.EcentaNotificationCMSComponent"
+                  abstract="false">
             <description>
                 Component is used to show EcentaNotifications for the signed B2bCustomer
             </description>
