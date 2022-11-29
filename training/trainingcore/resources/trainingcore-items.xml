@@ -213,6 +213,16 @@
             </attributes>
         </itemtype>
 
+        <!-- EcentaNotificationComponent -->
+        <itemtype code="EcentaNotificationCMSComponent"
+                  extends="SimpleCMSComponent"
+                  jaloclass="org.training.core.jalo.EcentaNotificationCMSComponent"
+                  abstract="false">
+            <description>
+                Component is used to show EcentaNotifications for the signed B2bCustomer
+            </description>
+        </itemtype>
+
         <!-- TypeGroups are for structure of this file only -->
         <typegroup name="Apparel">
             <itemtype code="ApparelProduct" extends="Product"
