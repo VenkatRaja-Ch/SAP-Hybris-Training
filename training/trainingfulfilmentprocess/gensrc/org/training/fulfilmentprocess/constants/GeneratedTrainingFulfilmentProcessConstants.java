@@ -1,7 +1,7 @@
 /*
  * ----------------------------------------------------------------
  * --- WARNING: THIS FILE IS GENERATED AND WILL BE OVERWRITTEN! ---
- * --- Generated at Nov 29, 2022, 3:30:06 PM                    ---
+ * --- Generated at Jan 20, 2023, 2:15:32 AM                    ---
  * ----------------------------------------------------------------
  */
 package org.training.fulfilmentprocess.constants;
