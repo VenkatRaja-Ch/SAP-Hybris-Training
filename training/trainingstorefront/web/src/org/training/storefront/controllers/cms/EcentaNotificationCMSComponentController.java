@@ -146,11 +146,6 @@ public class EcentaNotificationCMSComponentController
         );
     }
 
-    @Override
-    protected String getView(EcentaNotificationCMSComponentModel component) {
-        return null;
-    }
-
     // Get Current B2BCustomer method
     private B2BCustomerModel getCurrentB2bCustomer() {
 
