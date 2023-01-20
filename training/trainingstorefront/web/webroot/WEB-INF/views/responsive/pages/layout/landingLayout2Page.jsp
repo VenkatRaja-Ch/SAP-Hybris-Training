@@ -37,4 +37,8 @@
         <cms:component component="${feature}" element="div" class="yComponentWrapper"/>
     </cms:pageSlot>
 
+    <cms:pageSlot position="EcentaNotificationContentSlot" var="feature" element="div" class="span-24 ecentaNotificationComponentSection cms_display_component_slot">
+        <cms:component component="${feature}"/>
+    </cms:pageSlot>
+
 </template:page>
