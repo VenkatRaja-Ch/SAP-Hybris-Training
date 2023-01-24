@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.training.core.model.EcentaNotificationCMSComponentModel;
+import org.training.core.model.EcentaNotificationModel;
 import org.training.facades.cmsComponents.EcentaNotificationCMSComponentFacades;
 import org.training.storefront.controllers.ControllerConstants;
 
@@ -144,6 +147,20 @@ public class EcentaNotificationCMSComponentController
                 )
             )
         );
+    }
+
+    @RequestMapping(value="/setReadNotification", method= RequestMethod.GET)
+    public void markNotificationRead(@RequestParam("notificationPK") String notificationPK) {
+        EcentaNotificationModel currentEcentaNotification = getEcentaNotificationCMSComponentFacades().getEcentaNotificationFromPK(notificationPK);
+
+        currentEcentaNotification.setRead(true);
+    }
+
+    @RequestMapping(value="/setDeleteNotification", method=RequestMethod.GET)
+    public void markNotificationDeleted(@RequestParam String notificationPK) {
+        EcentaNotificationModel currentEcentaNotification = getEcentaNotificationCMSComponentFacades().getEcentaNotificationFromPK(notificationPK);
+
+        currentEcentaNotification.setDeleted(true);
     }
 
     // Get Current B2BCustomer method
