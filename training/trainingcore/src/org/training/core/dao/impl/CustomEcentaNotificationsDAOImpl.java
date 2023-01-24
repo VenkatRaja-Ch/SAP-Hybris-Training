@@ -21,12 +21,18 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
     private FlexibleSearchService flexibleSearchService;
 
     final String B2BCUSTOMER_THROUGH_PARAMS = "b2BCustomerSentThroughParams";
+    final String PK_THROUGH_PARAMS = "pk";
     final String B2BCUSTOMER_SEARCH_QUERY = "SELECT {PK} FROM {B2BCustomer} WHERE {uid}=?uid";
     final String ECENTA_NOTIFICATION_FOR_B2BCUSTOMER_SEARCH_QUERY =
             "SELECT {" + EcentaNotificationModel.PK + "} " +
             "FROM   {" + EcentaNotificationModel._TYPECODE + "} " +
             "WHERE  {" + EcentaNotificationModel.B2BCUSTOMER + "} = ?" +
             B2BCUSTOMER_THROUGH_PARAMS;
+
+    final String ECENTA_NOTIFICATION_SEARCH_BY_PK_QUERY =
+            "SELECT {" + EcentaNotificationModel.PK + "} " +
+            "FROM   {" + EcentaNotificationModel._TYPECODE + "} " +
+            "WHERE  {" + EcentaNotificationModel.PK + "} = ?" + PK_THROUGH_PARAMS;
 
     // Task: 4 -> CronJobs
     // Return the EcentaNotification Entities which are older than 365 days (1 year) using the FlexibleSearchService
@@ -63,6 +69,24 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
             return searchResult.getResult();
         else
             return Collections.emptyList();
+    }
+
+
+    // Task: 11 -> WCMS Component
+    public EcentaNotificationModel getEcentaNotificationForSpecificPk(final String ecentaNotificationPK)
+    {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("pk", PK_THROUGH_PARAMS);
+
+        final FlexibleSearchQuery searchQuery = new FlexibleSearchQuery(ECENTA_NOTIFICATION_SEARCH_BY_PK_QUERY);
+        searchQuery.addQueryParameters(params);
+        searchQuery.setResultClassList(Collections.singletonList(EcentaNotificationModel.class));
+        final SearchResult<EcentaNotificationModel> searchResult = getFlexibleSearchService().search(searchQuery);
+
+        if(!(null == searchResult.getResult()))
+            return searchResult.getResult().get(0);
+        else
+            return null;
     }
 
     // Fetching EcentaNotifications
