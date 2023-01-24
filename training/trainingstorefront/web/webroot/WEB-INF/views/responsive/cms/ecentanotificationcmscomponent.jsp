@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="from" uri="http://www.springframework.org/tags/form"%>
 
-<html>
 <style><%@include file="/_ui/responsive/common/bootstrap/css/ecentaNotificationCMSComponentStyle.css"%></style>
 <div class="tab-Container">
     <div class="button-Container">
@@ -15,7 +14,7 @@
         <button onclick="showPanel(5)" data-i18n-key="btn-title-all">Workflow <span class="my-badge">${allUnreadWorkflowTypeEcentaNotificationCount}</span></button>
     </div>
     <div class="tab-panel">
-        <table class="ecenta-notification-table">
+        <table class="ecenta-notification-table all-ecenta-notification-table">
             <tr>
                 <th>PRIORITY ICON</th>
                 <th>DATE</th>
@@ -44,7 +43,9 @@
                             </c:when>
                         </c:choose>
                     </td>
-                    <td>${notificationPK.date}</td>
+                    <td>
+                        ${notificationPK.date}
+                    </td>
                     <c:choose>
                         <c:when test="${notificationPK.read == 'true'}">
                             <td>
@@ -58,13 +59,13 @@
                         </c:when>
                     </c:choose>
                     <td>
-                        <form method="get">
-                            <input class="read-icon" type="image" src="https://icons.veryicon.com/png/o/internet--web/website-common-icons/hollow-check-mark.png" alt="read-icon" onclick="setRead(`${notificationPK.pk}`)"/>
+                        <form method="get" action="/setReadNotification">
+                            <input class="js-read-notification js-read-delete-icon" id="${notificationPK.pk}" type="image" src="https://icons.veryicon.com/png/o/internet--web/website-common-icons/hollow-check-mark.png" alt="read-icon"/>
                         </form>
                     </td>
                     <td>
-                        <form method="get">
-                            <input type="image" src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt="delete-icon" onclick="setDeleted(`${notificationPK.pk}`)">
+                        <form method="get" action="/setDeleteNotification">
+                            <input class="js-delete-notification js-read-delete-icon" id="${notificationPK.pk}" type="image" src="https://cdn-icons-png.flaticon.com/512/1214/1214428.png" alt="delete-icon"/>
                         </form>
                     </td>
                 </tr>
@@ -72,4 +73,3 @@
         </table>
     </div>
 </div>
-</html>
