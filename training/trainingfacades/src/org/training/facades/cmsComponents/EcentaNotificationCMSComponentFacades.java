@@ -97,6 +97,10 @@ public class EcentaNotificationCMSComponentFacades
                 .collect(Collectors.toList());
     }
 
+    public EcentaNotificationModel getEcentaNotificationFromPK(final String ecentaNotificationPK){
+        return getCustomEcentaNotificationsDAO().getEcentaNotificationForSpecificPk(ecentaNotificationPK);
+    }
+
 
     // Counting unread Notifications from EcentaNotification List
     public int countUnreadEcentaNotifications(List<EcentaNotificationModel> passedEcentaNotificationList){
