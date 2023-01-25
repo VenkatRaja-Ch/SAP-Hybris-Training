@@ -14,6 +14,8 @@ public interface CustomEcentaNotificationsDAO{
     // Task: 4 -> CronJobs
     List<EcentaNotificationModel> findAllNotificationOlderThanSpecificDays(final Date oldDate);
 
+    public EcentaNotificationModel getEcentaNotificationForSpecificPk(final String ecentaNotificationPK);
+
     // Task: 6 -> DAO
     /* Finds the B2BCustomer using the passed uid */
     List<B2BCustomerModel> findB2BCustomerUsingUID(final String b2bCustomerUid);

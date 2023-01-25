@@ -1,23 +1,21 @@
 UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
 
-# Macros
+# MACRO
 $contentCatalog=powertoolsContentCatalog
 $contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
-$siteResource=jar:org.training.inititalData.constants.TrainingInitialDataConstants&/traininginitialdata/import
-$lang=en
 
-# Defining EcentaNotificationComponent
+# DEFINE ECENTANOTIFICATION CMS COMPONENT
 INSERT_UPDATE EcentaNotificationCMSComponent; $contentCV[unique=true]; uid[unique=true]; name; &componentRef;
-;; EcentaNotificationComponent; Ecenta Notification Component; EcentaNotificationComponentRefID;
-
-# Defining ContentSlot and connecting EcenatNotificationCMSComponent
+;; EcentaNotificationComponent; Ecenta Notification Component; EcentaNotificationComponent;
+# DEFINE CONTENTSLOTNAME
+INSERT_UPDATE ContentSlotName; name[unique=true]; template(uid,$contentCV)[unique=true][default='LandingPage2Template']; validComponentTypes(code); compTypeGroup(code);
+;EcentaNotificationSlotName;;EcentaNotificationCMSComponent;;
+# DEFINE CONTENT SLOT
 INSERT_UPDATE ContentSlot; $contentCV[unique=true]; uid[unique=true]; name; active; cmsComponents(&componentRef);
-;; EcentaNotificationContentSlot; Ecenta Notification ContentSlot for HomePage; true; EcentaNotificationComponentRefID;
-
-# Adding the defined ContentSlot to the HomePage
-INSERT_UPDATE ContentSlotForPage; $contentCV[unique=true]; uid[unique=true]; position[unique=true]; page(uid,$contentCV)[unique=true][default='homepage']; contentSlot(uid,$contentCV)[unique=true];
-;; EcentaNotificationComponent-Section4-Homepage; Section4;; EcentaNotificationContentSlot;
-
-# Defining UserGroup Restrictions for the EcentaNotificationComponent
-INSERT_UPDATE CMSUserGroupRestriction; $contentCV[unique=true]; uid[unique=true]; name; userGroups(uid); includeSubgroups; components(&componentRef);
-;; EcentaNotificationCMSGroupRestriction; Ecenta Notification B2bCustomer User Group Restriction; b2bcustomergroup; true; EcentaNotificationComponentRefID;
+;;EcentaNotificationContentSlot; Ecenta Notification Content Slot; true; EcentaNotificationComponent;
+# DEFINE CONTENTSLOTFORPAGE
+INSERT_UPDATE ContentSlotForPage; $contentCV[unique=true]; uid[unique=true]; position[unique=true]; page(uid,$contentCV)[unique=true][default='homepage']; ContentSlot(uid,$contentCV)[unique=true];
+;;EcentaNotificationSlotForPage-Homepage; EcentaNotificationContentSlot;;EcentaNotificationContentSlot;
+# GROUP RESTRICTIONS
+INSERT_UPDATE CMSUserGroupRestriction; $contentCV[unique=true]; uid[unique=true]; name; userGroups(code); includeSubgroups; components(&componentRef);
+;; EcentaNotificationCMSUserGroupRestriction; EcentaNotification User Restriction; b2bcustomergroup; true; EcentaNotificationComponent;

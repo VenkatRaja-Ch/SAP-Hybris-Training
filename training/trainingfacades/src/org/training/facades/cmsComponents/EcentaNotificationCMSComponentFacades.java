@@ -6,6 +6,7 @@ import org.training.core.dao.CustomEcentaNotificationsDAO;
 import org.training.core.enums.NotificationPriorityEnumeration;
 import org.training.core.enums.NotificationTypeEnumeration;
 import org.training.core.model.EcentaNotificationModel;
+import org.apache.log4j.Logger;
 
 import java.util.Comparator;
 import java.util.List;
@@ -18,8 +19,9 @@ public class EcentaNotificationCMSComponentFacades
     // services
     private CustomEcentaNotificationsDAO customEcentaNotificationsDAO;
     private CustomEcentaNotificationCRUDService customEcentaNotificationCRUDService;
+    private final static Logger LOG = Logger.getLogger(EcentaNotificationCMSComponentFacades.class.getName());
 
-    // get all B2bCustomer
+    // get current B2bCustomer using uid
     public List<B2BCustomerModel> getAllB2bCustomersList(String b2BCustomerUid){
 
         if(!(Objects.isNull(getCustomEcentaNotificationsDAO().findB2BCustomerUsingUID(b2BCustomerUid)))) {
@@ -33,11 +35,12 @@ public class EcentaNotificationCMSComponentFacades
     public List<EcentaNotificationModel> getAllEcentaNotificationsForB2bCustomer(B2BCustomerModel passedB2bCustomer){
 
         return sortEcentaNotificationInDescWithCreationDate(
-                    getCustomEcentaNotificationsDAO()
-                    .findAllNotificationForSpecificB2bCustomer(passedB2bCustomer)
+                getCustomEcentaNotificationsDAO()
+                        .findAllNotificationForSpecificB2bCustomer(passedB2bCustomer)
         );
     }
 
+    /*      FETCHING ECENTA NOTIFICATIONS WITH CERTAIN PRIORITY        */
     // get all EcentaNotifications with High Priority
     public List<EcentaNotificationModel> getAllEcentaNotificationsWithHighPriority(B2BCustomerModel passedB2bCustomer){
 
@@ -51,6 +54,8 @@ public class EcentaNotificationCMSComponentFacades
             return null;
     }
 
+
+    /*      FETCHING ECENTA NOTIFICATIONS WITH CERTAIN TYPE        */
     // get all EcentaNotifications of Order Management Type
     public List<EcentaNotificationModel> getAllEcentaNotificationsOfOrderManagementType(B2BCustomerModel passedB2bCustomer){
         return sortEcentaNotificationInDescWithCreationDate(
@@ -80,18 +85,6 @@ public class EcentaNotificationCMSComponentFacades
         return getCustomEcentaNotificationsDAO().findAllNotificationForSpecificB2bCustomerAndSpecificType(passedB2bCustomer, NotificationTypeEnumeration.WORKFLOW);
     }
 
-    // update the EcentaNotifications
-    public void updateEcentaNotification(List<EcentaNotificationModel> currentEcentaNotificationList){
-        for (EcentaNotificationModel currentEcentaNotificationItem : currentEcentaNotificationList)
-            getCustomEcentaNotificationCRUDService().updateEcentaNotification(currentEcentaNotificationItem);
-    }
-
-    // delete the EcentaNotifications
-    public void deleteEcentaNotification(List<EcentaNotificationModel> currentEcentaNotificationList){
-        for (EcentaNotificationModel currentEcentaNotificationItem : currentEcentaNotificationList)
-            getCustomEcentaNotificationCRUDService().deleteEcentaNotification(currentEcentaNotificationItem);
-    }
-
     // sorting EcentaNotification with respect to their creation dates
     List<EcentaNotificationModel> sortEcentaNotificationInDescWithCreationDate(List<EcentaNotificationModel> currentEcentaNotificationList){
         return currentEcentaNotificationList
@@ -102,6 +95,10 @@ public class EcentaNotificationCMSComponentFacades
                                 .reversed()
                 )
                 .collect(Collectors.toList());
+    }
+
+    public EcentaNotificationModel getEcentaNotificationFromPK(final String ecentaNotificationPK){
+        return getCustomEcentaNotificationsDAO().getEcentaNotificationForSpecificPk(ecentaNotificationPK);
     }
 
 
@@ -121,7 +118,6 @@ public class EcentaNotificationCMSComponentFacades
 
         return unreadNotifications;
     }
-
 
     /* GETTERS AND SETTERS */
     public CustomEcentaNotificationsDAO getCustomEcentaNotificationsDAO() {
