@@ -81,6 +81,7 @@
 		<js>/_ui/responsive/common/js/acc.quickorder.js</js>
 		<js>/_ui/responsive/common/js/acc.csv-import.js</js>
 		<js>/_ui/responsive/common/js/_autoload.js</js>
+		<js>/_ui/responsive/common/js/acc.ecentanotificationcmscomponent.js</js>
 		
 		<!-- Cms Action JavaScript files -->
         <js>/_ui/responsive/common/js/cms/*.js</js>

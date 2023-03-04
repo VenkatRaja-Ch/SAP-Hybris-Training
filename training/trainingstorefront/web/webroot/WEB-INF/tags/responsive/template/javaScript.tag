@@ -80,6 +80,7 @@
 		<script src="${commonResourcePathHtml}/js/acc.consent.js"></script>
 		<script src="${commonResourcePathHtml}/js/acc.cookienotification.js"></script>
 		<script src="${commonResourcePathHtml}/js/acc.closeaccount.js"></script>
+		<script src="${commonResourcePathHtml}/js/acc.ecentanotificationcmscomponent.js"></script>
 
 		<script src="${commonResourcePathHtml}/js/acc.csv-import.js"></script>
 
