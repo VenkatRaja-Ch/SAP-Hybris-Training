@@ -3,7 +3,7 @@
     height: 50px;
 }
 
-.js-read-delete-icon {
+.js-read-icon, .js-delete-icon {
     width: 20px;
     height: 20px;
 }
