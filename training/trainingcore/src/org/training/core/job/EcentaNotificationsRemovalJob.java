@@ -79,28 +79,28 @@ public class EcentaNotificationsRemovalJob extends AbstractJobPerformable<Ecenta
                 + "\n\n\n"
         );
 
-        /* Task 2: Fetching all notification and testing the methods */
-        // Fetch B2BCustomer Notification
-        final List<EcentaNotificationModel> b2BCustomer1NotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomer( b2BCustomer1 );
-        // Log Notification
-        logEcentaNotification(b2BCustomer1NotificationList);
-
-        // Fetch Type&Customer Notification
-        final List<EcentaNotificationModel> typeAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomer2, NotificationTypeEnumeration.valueOf("OrderManagement"));
-        // Log Notification
-        logEcentaNotification(typeAndB2bCustomerNotificationList);
-
-        // Fetch Priority&Customer Notification
-        final List<EcentaNotificationModel> priorityAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificPriority(b2BCustomer3, NotificationPriorityEnumeration.valueOf("High"));
-        // Log Notification
-        logEcentaNotification(priorityAndB2bCustomerNotificationList);
-
-        LOG.info("\nDAO task successfully tested!\n");
-        /*  Testcase for executing the DAO Task ends    */
-
-        /*  Testcases for ModelService Task */
-        getCustomEcentaNotificationCRUDService().cloneEcentaNotification(b2BCustomer1NotificationList.get(0));
-        LOG.info("\nModelService Task tested!");
+//        /* Task 2: Fetching all notification and testing the methods */
+//        // Fetch B2BCustomer Notification
+//        final List<EcentaNotificationModel> b2BCustomer1NotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomer( b2BCustomer1 );
+//        // Log Notification
+//        logEcentaNotification(b2BCustomer1NotificationList);
+//
+//        // Fetch Type&Customer Notification
+//        final List<EcentaNotificationModel> typeAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificType(b2BCustomer2, NotificationTypeEnumeration.valueOf("OrderManagement"));
+//        // Log Notification
+//        logEcentaNotification(typeAndB2bCustomerNotificationList);
+//
+//        // Fetch Priority&Customer Notification
+//        final List<EcentaNotificationModel> priorityAndB2bCustomerNotificationList = customEcentaNotificationsDAO.findAllNotificationForSpecificB2bCustomerAndSpecificPriority(b2BCustomer3, NotificationPriorityEnumeration.valueOf("High"));
+//        // Log Notification
+//        logEcentaNotification(priorityAndB2bCustomerNotificationList);
+//
+//        LOG.info("\nDAO task successfully tested!\n");
+//        /*  Testcase for executing the DAO Task ends    */
+//
+//        /*  Testcases for ModelService Task */
+//        getCustomEcentaNotificationCRUDService().cloneEcentaNotification(b2BCustomer1NotificationList.get(0));
+//        LOG.info("\nModelService Task tested!");
 
         return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
     }
