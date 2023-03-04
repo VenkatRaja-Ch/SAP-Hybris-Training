@@ -2,13 +2,13 @@ package org.training.storefront.controllers.cms;
 
 import de.hybris.platform.b2b.model.B2BCustomerModel;
 import de.hybris.platform.servicelayer.user.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.training.core.job.EcentaNotificationsRemovalJob;
 import org.training.core.model.EcentaNotificationCMSComponentModel;
 import org.training.core.model.EcentaNotificationModel;
 import org.training.facades.cmsComponents.EcentaNotificationCMSComponentFacades;
@@ -16,6 +16,8 @@ import org.training.storefront.controllers.ControllerConstants;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
+import org.apache.log4j.Logger;
 
 @Scope("tenant")
 @Controller("EcentaNotificationCMSComponentController")
@@ -29,6 +31,7 @@ public class EcentaNotificationCMSComponentController
     // services
     private UserService userService;
     private EcentaNotificationCMSComponentFacades ecentaNotificationCMSComponentFacades;
+    private final static Logger LOG = Logger.getLogger(EcentaNotificationsRemovalJob.class.getName());
 
     @Override
     protected void fillModel(HttpServletRequest request, Model model, EcentaNotificationCMSComponentModel component)
@@ -149,19 +152,43 @@ public class EcentaNotificationCMSComponentController
         );
     }
 
-    @RequestMapping(value="/setReadNotification", method= RequestMethod.GET)
-    public void markNotificationRead(@RequestParam("notificationPK") String notificationPK) {
-        EcentaNotificationModel currentEcentaNotification = getEcentaNotificationCMSComponentFacades().getEcentaNotificationFromPK(notificationPK);
+    // marking the ecenta notification read
+    @GetMapping("/setReadNotification")
+    @ResponseBody
+    public String markEcentaNotificationRead(@RequestParam(value="notificationPK") final String notificationPK){
 
-        currentEcentaNotification.setRead(true);
+        EcentaNotificationModel currentEcentaNotificationItem = getEcentaNotificationCMSComponentFacades().getEcentaNotificationFromPK(notificationPK);
+
+        if(!(Objects.isNull(currentEcentaNotificationItem))){
+            currentEcentaNotificationItem.setRead(true);
+            getEcentaNotificationCMSComponentFacades().getCustomEcentaNotificationCRUDService().updateEcentaNotification(currentEcentaNotificationItem);
+            return "success";
+        }
+        else {
+            LOG.error("No notification Object Found");
+            return "failed";
+        }
     }
 
-    @RequestMapping(value="/setDeleteNotification", method=RequestMethod.GET)
-    public void markNotificationDeleted(@RequestParam String notificationPK) {
-        EcentaNotificationModel currentEcentaNotification = getEcentaNotificationCMSComponentFacades().getEcentaNotificationFromPK(notificationPK);
 
-        currentEcentaNotification.setDeleted(true);
+    // marking the ecenta notification deleted
+    @GetMapping("/setDeleteNotification")
+    @ResponseBody
+    public String markEcentaNotificationDeleted(@RequestParam(value="notificationPK") final String notificationPK){
+
+        EcentaNotificationModel currentEcentaNotificationItem = getEcentaNotificationCMSComponentFacades().getEcentaNotificationFromPK(notificationPK);
+
+        if(!(Objects.isNull(currentEcentaNotificationItem))){
+            currentEcentaNotificationItem.setDeleted(true);
+            getEcentaNotificationCMSComponentFacades().getCustomEcentaNotificationCRUDService().updateEcentaNotification(currentEcentaNotificationItem);
+            return "success";
+        }
+        else {
+            LOG.error("No notification Object Found");
+            return "failed";
+        }
     }
+
 
     // Get Current B2BCustomer method
     private B2BCustomerModel getCurrentB2bCustomer() {
