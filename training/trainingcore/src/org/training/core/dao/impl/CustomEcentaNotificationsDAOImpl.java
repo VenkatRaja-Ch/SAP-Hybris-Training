@@ -76,7 +76,7 @@ public class CustomEcentaNotificationsDAOImpl implements CustomEcentaNotificatio
     public EcentaNotificationModel getEcentaNotificationForSpecificPk(final String ecentaNotificationPK)
     {
         final Map<String, Object> params = new HashMap<>();
-        params.put("pk", PK_THROUGH_PARAMS);
+        params.put(PK_THROUGH_PARAMS, ecentaNotificationPK);
 
         final FlexibleSearchQuery searchQuery = new FlexibleSearchQuery(ECENTA_NOTIFICATION_SEARCH_BY_PK_QUERY);
         searchQuery.addQueryParameters(params);
