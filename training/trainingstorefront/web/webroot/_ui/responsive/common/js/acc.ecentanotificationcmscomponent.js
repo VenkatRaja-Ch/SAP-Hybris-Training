@@ -1,31 +1,15 @@
-let $tabButtons = $(".tab-Container .button-Container button");
-let $tabPanels = $(".tab-Container .tab-panel");
-
-function showPanel (panelIndex) {
-
-    $tabButtons.forEach((currentPanel) => {
-        currentPanel.style.display = "none";
-    });
-
-    $tabPanels[panelIndex].style.display="block";
-}
-
-showPanel(1);
-
 $(document).ready(function(){
     $(".js-read-notification").click( function () {
 
         alert("read notification button was pressed!");
-        let currentNotificationPK = this.id;
-        ACC.ecentanotificationcmscomponent.readNotification(currentNotificationPK);
+        ACC.ecentanotificationcmscomponent.readNotification();
     });
 });
 
 $(document).ready(function () {
     $(".js-delete-notification").click( function () {
 
-        let currentNotificationPK = this.id;
-        ACC.ecentanotificationcmscomponent.deleteNotification(currentNotificationPK);
+        ACC.ecentanotificationcmscomponent.deleteNotification();
     });
 });
 
@@ -36,10 +20,12 @@ ACC.ecentanotificationcmscomponent = {
         "deleteNotification"
     ],
 
-    readNotification : function (notificationPK) {
+    readNotification : function () {
         $(".js-read-notification").click(function () {
 
             let ajaxToSetReadInControllerUrl = `${ACC.config.encodedContextPath}/view/EcentaNotificationCMSComponentController/setReadNotification`;
+            let notificationPK = $(".js-read-notification").attr("id");
+            console.log("Current Notification PK: ", notificationPK);
 
             $.ajax({
                 url : ajaxToSetReadInControllerUrl,
@@ -49,16 +35,23 @@ ACC.ecentanotificationcmscomponent = {
                     console.log("Successfully marked notification as Read");
                 },
                 error: function(error){
+                    console.log("Something went wrong while marking the notification read!");
                     console.log(error);
+                }
+            }).done(function(data){
+                if(data === "success"){
+                    $(`#${notificationPK}`).css("font-weight", "normal");
                 }
             });
         });
     },
 
-    deleteNotification : function (notificationPK) {
+    deleteNotification : function () {
         $(".js-delete-notification").click(function () {
 
             let ajaxToSetDeleteInControllerUrl = `${ACC.config.encodedContextPath}/view/EcentaNotificationCMSComponentController/setDeleteNotification`;
+            let notificationPK = $(".js-delete-notification").attr("id");
+            console.log("Current Notification PK: ", notificationPK);
 
             $.ajax({
                 url : ajaxToSetDeleteInControllerUrl,
@@ -68,7 +61,7 @@ ACC.ecentanotificationcmscomponent = {
                     location.reload();
                 },
                 error: function(error){
-                    console.log(error)
+                    console.log(error);
                 }
             });
         });
